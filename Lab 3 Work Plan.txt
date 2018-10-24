@@ -1,0 +1,21 @@
+﻿Work Plan Lab 3: Single Cycle CPU
+Allison, Vicky and Allison
+* Understanding lab (1 hour Individually) → Done during class
+<Rough Draft of our Single Cycle CPU implementation>
+  
+
+* Processor - (3 hours) -- Friday, October 26th
+   * Test Bench - (3 hours) -- Friday, October 26th
+   * Integration Testing (2 hours) -- Sunday, October 28th
+* Program Tests Write -  (3 hours) -- Monday, October 29th
+   * Write Assembly Test (1 hour) --- Monday, October 29th
+* README and Test Running Scripts - (1 hour)  --  Tuesday, October 30th
+* Final Report  (4 hours) --  Thursday, November 1st
+   * Work plan reflection (30 mins)
+   * Performance Analysis (1 hour)
+   * Description of Test Plan (1.5 hours)
+   * Block diagram (1 hour)
+* Preparation for class demo (1 hour) -- Thursday, November 1st
+
+
+According to our original work plan, we were a day and a half behind on finishing the midpoint check-in. Otherwise, our timing was fairly well planned. Our estimations for certain things were less well calculated. Many of our estimation issues arose when we had to backtrack to find an error after attempted implementations. We realized two major areas for improvement. Firstly, we would like to work on running tests as we build the module. Often we run into time draining errors when we try to code the whole module, integrate and then test afterwards. Secondly, we plan to preload effort into understanding a module or part of the circuit before we start coding it. This will allow us to not make a large error that will have to be totally changed after we discover a bug. Altogether, we feel satisfied with the conclusion of this lab and adhering to the work plan.
