@@ -31,7 +31,7 @@ module instructiondecode(
     parameter SLT_f = 6'h2a;
     parameter SUB_f = 6'h22;
 
-
+// VALUES ARE NOT SET YET 
  always @(*) begin 
  	case(opcode)
  		LW: begin
