@@ -1,9 +1,9 @@
 module signextend
-#(parameter width = 8)
+#(parameter width = 16)
 (
   input [width:0] unextended,
   input clk,
-  output reg [15:0] extended 
+  output reg [31:0] extended 
 );
 
 always@(posedge clk)
