@@ -35,93 +35,138 @@ module instructiondecode(
  always @(*) begin 
  	case(opcode)
  		LW: begin
- 			jump = 1;
- 			branch = 1;
- 			mem_read = 1;
- 			mem_write = 1;
- 			alu_src = 1;
- 			reg_write = 1;
- 			sign_or_zero = 1;
- 			memToReg = 0;
- 			regDst = 0;
+ 			jump = 0;
+ 			branchE = 0;
+ 			jumpLink =0;
+ 			branchNE = 0;
+ 			alu_src = alu_add;
+ 			alu_control = 1;
+ 			reg_write = 0;
+ 			mem_write = 0;
+ 			memToReg = 1;
+ 			regDst = 1;		
  		end
  		SW: begin
- 			jump = 1;
- 			branch = 1;
- 			mem_read = 1;
- 			mem_write = 1;
- 			alu_src = 1;
+ 			jump = 0;
+ 			branchE = 0;
+ 			jumpLink =0;
+ 			branchNE = 0;
+ 			alu_src = alu_add;
+ 			alu_control = 1;
  			reg_write = 1;
- 			sign_or_zero = 1;
+ 			mem_write = 1;
  			memToReg = 0;
- 			regDst = 0;
+ 			regDst = 0;	 // x,dosent matter
  		end
  		J: begin
  			jump = 1;
- 			branch = 1;
- 			mem_read = 1;
- 			mem_write = 1;
- 			alu_src = 1;
- 			reg_write = 1;
- 			sign_or_zero = 1;
- 			memToReg = 0;
- 			regDst = 0;
- 		end
+ 			branchE = 0;
+ 			jumpLink =0;
+ 			branchNE = 0;
+ 			alu_src = xxx; // dosent matter
+ 			alu_control = 1;
+ 			reg_write = 0;
+ 			mem_write = 0;
+ 			memToReg = 1;
+ 			regDst = 1;	
  		JAL: begin
  			jump = 1;
- 			branch = 1;
- 			mem_read = 1;
- 			mem_write = 1;
- 			alu_src = 1;
+ 			branchE = 0;
+ 			jumpLink =1;
+ 			branchNE = 0;
+ 			alu_src = xxx; // dosent matter
+ 			alu_control = 1;
  			reg_write = 1;
- 			sign_or_zero = 1;
- 			memToReg = 0;
- 			regDst = 0;
+ 			mem_write = 0;
+ 			memToReg = 1;
+ 			regDst = 1;		
  		end
  		BEQ: begin
- 			jump = 1;
- 			branch = 1;
- 			mem_read = 1;
- 			mem_write = 1;
- 			alu_src = 1;
+ 			jump = 0;
+ 			branchE = 1;
+ 			jumpLink =0;
+ 			branchNE = 1;
+ 			alu_src = SUB;
+ 			alu_control = 1;
  			reg_write = 1;
- 			sign_or_zero = 1;
- 			memToReg = 0;
- 			regDst = 0;
+ 			mem_write = 0;
+ 			memToReg = 1;
+ 			regDst = 1;	
  		end
  		BNE: begin
- 			jump = 1;
- 			branch = 1;
- 			mem_read = 1;
- 			mem_write = 1;
- 			alu_src = 1;
+ 			jump = 0;
+ 			branchE = 1;
+ 			jumpLink =0;
+ 			branchNE = 1;
+ 			alu_src = SUB;
+ 			alu_control = 1;
  			reg_write = 1;
- 			sign_or_zero = 1;
- 			memToReg = 0;
- 			regDst = 0;
+ 			mem_write = 0;
+ 			memToReg = 1;
+ 			regDst = 1;	
  		end
  		XORI: begin
- 			jump = 1;
- 			branch = 1;
- 			mem_read = 1;
- 			mem_write = 1;
- 			alu_src = 1;
+ 			jump = 0;
+ 			branchE = 0;
+ 			jumpLink =0;
+ 			branchNE = 0;
+ 			alu_src = XOR;
+ 			alu_control = 0;
  			reg_write = 1;
- 			sign_or_zero = 1;
+ 			mem_write = 0;
  			memToReg = 0;
- 			regDst = 0;
+ 			regDst = 0;	
  		end
   		ADDI: begin
- 			jump = 1;
- 			branch = 1;
- 			mem_read = 1;
- 			mem_write = 1;
- 			alu_src = 1;
+ 			jump = 0;
+ 			branchE = 0;
+ 			jumpLink =0;
+ 			branchNE = 0;
+ 			alu_src = ADD;
+ 			alu_control = 0;
  			reg_write = 1;
- 			sign_or_zero = 1;
+ 			mem_write = 0;
  			memToReg = 0;
- 			regDst = 0;
+ 			regDst = 0;	
+ 		end
+ 		 ADD: begin
+ 			jump = 0;
+ 			branchE = 0;
+ 			jumpLink =0;
+ 			branchNE = 0;
+ 			alu_src = ADD;
+ 			alu_control = 1;
+ 			reg_write = 1;
+ 			mem_write = 0;
+ 			memToReg = 0;
+ 			regDst = 1;	
+ 		end
+
+  		 SUB: begin
+ 			jump = 0;
+ 			branchE = 0;
+ 			jumpLink =0;
+ 			branchNE = 0;
+ 			alu_src = SUB;
+ 			alu_control = 1;
+ 			reg_write = 1;
+ 			mem_write = 0;
+ 			memToReg = 0;
+ 			regDst = 1;	
+ 		end
+   		 SLT: begin
+ 			jump = 0;
+ 			branchE = 0;
+ 			jumpLink =0;
+ 			branchNE = 0;
+ 			alu_src = SUB;
+ 			alu_control = 1;
+ 			reg_write = 1;
+ 			mem_write = 0;
+ 			memToReg = 0;
+ 			regDst = 1;	
  		end
  end
+
 
  endmodule
