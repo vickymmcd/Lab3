@@ -2,9 +2,8 @@ module instructiondecode(
 	input[5:0] opcode,  
     input[5:0] function, // Not sure if needed
     
-    output reg[2:0] alu_op,
-    output reg[1:0] memToReg, regDst,
-    output reg jump,branch,mem_read,mem_write,alu_src,reg_write,sign_or_zero, regDst, memToReg                      
+    output reg[2:0] alu_src,
+    output reg jump,jumpLink, branchE, branchNE,mem_write,alu_control,reg_write, regDst, memToReg                      
 );
 
 	//Instructions: LW, SW, J, JR, JAL, BEQ, BNE, XORI, ADDI, ADD, SUB, SLT
