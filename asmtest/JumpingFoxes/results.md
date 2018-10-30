@@ -1,4 +1,4 @@
-#Expected Results
+# Expected Results
 
 ## Multiply By 3 Test
 At the end of execution of multiplyby3.asm the value in $a0 should be 12 (a hex value of c). You can also test that it works for different values by loading a different immediate value (instead of 4) into $t1 on line 3.
