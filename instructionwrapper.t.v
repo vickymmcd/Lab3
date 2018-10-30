@@ -12,11 +12,10 @@ module instructionwrapperTest();
 	wire[4:0] Rs, Rd, Rt;
 	wire[5:0] Op;
 	wire[2:0]  alu_src;
-	wire alu_control,jumpLink, jump, regDst,memToReg, instructionType, branchNE, branchE, mem_write, reg_write;
+	wire alu_control,jumpLink, jump, regDst,memToReg, branchNE, branchE, mem_write, reg_write;
 
 	instructionwrapper instructionwrapper(
 		.Instructions(Instructions),
-		.instructionType(instructionType),
 		.Rs             (Rs),
 		.Rd             (Rd),
 		.Rt             (Rt),

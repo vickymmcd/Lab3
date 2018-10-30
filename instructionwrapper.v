@@ -7,7 +7,6 @@ module instructionwrapper
 (
 
     input[31:0] Instructions,
-    input instructionType, // 0 for I an d1 for J
 
 	output[4:0] Rs, Rd, Rt,
 	output[15:0] imm,
@@ -26,35 +25,6 @@ module instructionwrapper
 		.Rs(Rs),
 		.Rt(Rt)
 	);
-	// Determine if it is i or j type
-	// always @(*) begin
-	//   if (instructionType == 1'b0)
-	//     // Type I
-	// 	instructionReadIType instructionReadIType(
-	// 		.Instruction(Instructions),
-	// 		.imm(imm),
-	// 		.Op(Op),
-	// 		.Rs(Rs),
-	// 		.Rt(Rt)
-	// 	);
-	//   else if (instructionType == 1'b1)
-	//     // Type J
-	// 	instructionReadJType instructionReadJType(
-	// 		.Instruction(Instructions),
-	// 		.imm(imm),
-	// 		.Op(Op),
-	// 		.Rt(Rt)
-	// 	);
-	//   else
-	// 	instructionReadIType instructionReadIType(
-	// 		.Instruction(Instructions),
-	// 		.imm(imm),
-	// 		.Op(Op),
-	// 		.Rs(Rs),
-	// 		.Rt(Rt)
-	// 	);
-	// end
-
 
     instructiondecode instructiondecode(
         .Op(Op), //.funct(funct), // inputs
