@@ -35,7 +35,7 @@ module instructiondecode(
     //input[5:0] function, // Not sure if needed
     
     output reg[2:0] alu_src,
-    output reg jump,jumpLink, jumpReg, branchE, branchNE,mem_write,alu_control,reg_write, regDst, memToReg                      
+    output reg jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg                      
 );
 
 	//Instructions: LW, SW, J, JR, JAL, BEQ, BNE, XORI, ADDI, ADD, SUB, SLT
@@ -46,9 +46,9 @@ always @(Op) begin
         `LW: begin
             jump = 0;
             jumpReg = 0;
-            branchE = 0;
+            branchatall = 0;
             jumpLink =0;
-            branchNE = 0;
+            bne = 0;
             alu_src = `alu_add;
             alu_control = 1;
             reg_write = 0;
@@ -59,9 +59,9 @@ always @(Op) begin
         `SW: begin
             jump = 0;
             jumpReg = 0;
-            branchE = 0;
+            branchatall = 0;
             jumpLink =0;
-            branchNE = 0;
+            bne = 0;
             alu_src = `alu_add;
             alu_control = 1;
             reg_write = 1;
@@ -72,9 +72,9 @@ always @(Op) begin
         `J: begin
             jump = 1;
             jumpReg = 0;
-            branchE = 0;
+            branchatall = 0;
             jumpLink =0;
-            branchNE = 0;
+            bne = 0;
             alu_src = 000; // dosent matter
             alu_control = 1;
             reg_write = 0;
@@ -85,9 +85,9 @@ always @(Op) begin
         `JAL: begin
             jump = 1;
             jumpReg = 0;
-            branchE = 0;
+            branchatall = 0;
             jumpLink =1;
-            branchNE = 0;
+            bne = 0;
             alu_src = 000; // dosent matter
             alu_control = 1;
             reg_write = 1;
@@ -98,9 +98,9 @@ always @(Op) begin
         `BEQ: begin
             jumpReg = 0;
             jump = 0;
-            branchE = 1;
+            branchatall = 1;
             jumpLink =0;
-            branchNE = 1;
+            bne = 1;
             alu_src = `alu_sub;
             alu_control = 1;
             reg_write = 1;
@@ -111,9 +111,9 @@ always @(Op) begin
         `BNE: begin
             jumpReg = 0;
             jump = 0;
-            branchE = 1;
+            branchatall = 1;
             jumpLink =0;
-            branchNE = 1;
+            bne = 1;
             alu_src = `alu_sub;
             alu_control = 1;
             reg_write = 1;
@@ -124,9 +124,9 @@ always @(Op) begin
         `XORI: begin
             jump = 0;
             jumpReg = 0;
-            branchE = 0;
+            branchatall = 0;
             jumpLink =0;
-            branchNE = 0;
+            bne = 0;
             alu_src = `alu_xor;
             alu_control = 0;
             reg_write = 1;
@@ -136,9 +136,9 @@ always @(Op) begin
         end
         `ADDI: begin
             jump = 0;
-            branchE = 0;
+            branchatall = 0;
             jumpLink =0;
-            branchNE = 0;
+            bne = 0;
             alu_src = `alu_add;
             alu_control = 0;
             reg_write = 1;
@@ -152,9 +152,9 @@ always @(Op) begin
                 `JR_f: begin
                     jump = 1;
                     jumpReg = 1;
-                    branchE = 0;
+                    branchatall = 0;
                     jumpLink =0;
-                    branchNE = 0;
+                    bne = 0;
                     alu_src = `alu_sub;
                     alu_control = 0;
                     reg_write = 0;
@@ -165,9 +165,9 @@ always @(Op) begin
                 `ADD_f: begin
                     jump = 0;
                     jumpReg = 0;
-                    branchE = 0;
+                    branchatall = 0;
                     jumpLink =0;
-                    branchNE = 0;
+                    bne = 0;
                     alu_src = `alu_add;
                     alu_control = 1;
                     reg_write = 1;
@@ -178,9 +178,9 @@ always @(Op) begin
                 `SLT_f: begin
                     jump = 0;
                     jumpReg = 0;
-                    branchE = 0;
+                    branchatall = 0;
                     jumpLink =0;
-                    branchNE = 0;
+                    bne = 0;
                     alu_src = `alu_slt;
                     alu_control = 1;
                     reg_write = 1;
@@ -191,9 +191,9 @@ always @(Op) begin
                 `SUB_f: begin
                     jump = 0;
                     jumpReg = 0;
-                    branchE = 0;
+                    branchatall = 0;
                     jumpLink =0;
-                    branchNE = 0;
+                    bne = 0;
                     alu_src = `alu_sub;
                     alu_control = 1;
                     reg_write = 1;

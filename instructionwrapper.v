@@ -14,7 +14,7 @@ module instructionwrapper
 	output[5:0] Op, funct,
 	output[25:0] addr,
     output[2:0] alu_src,
-    output jump,jumpLink, jumpReg, branchE, branchNE,mem_write,alu_control,reg_write, regDst, memToReg      
+    output jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg      
 );
 
 	wire ALU_src;
@@ -48,7 +48,7 @@ module instructionwrapper
         .Op(Op), .funct(funct), // inputs
         .alu_src(alu_src),  // rest are outputs
         .jump(jump), .jumpLink(jumpLink), .jumpReg(jumpReg),
-        .branchNE(branchNE), .branchE(branchE),
+        .bne(bne), .branchatall(branchatall),
         .mem_write(mem_write), .alu_control(alu_control),
         .reg_write(reg_write), .regDst(regDst), .memToReg(memToReg)
     );

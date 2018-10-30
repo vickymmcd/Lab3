@@ -12,7 +12,7 @@ module instructionwrapperTest();
 	wire[4:0] Rs, Rd, Rt;
 	wire[5:0] Op, funct;
 	wire[2:0]  alu_src;
-	wire alu_control,jumpLink, jump, jumpReg, regDst,memToReg, branchNE, branchE, mem_write, reg_write;
+	wire alu_control,jumpLink, jump, jumpReg, regDst,memToReg, bne, branchatall, mem_write, reg_write;
 
 	instructionwrapper instructionwrapper(
 		.Instructions(Instructions),
@@ -27,8 +27,8 @@ module instructionwrapperTest();
 		.jump           (jump),
 		.jumpLink       (jumpLink),
 		.jumpReg        (jumpReg),
-		.branchE        (branchE),
-		.branchNE       (branchNE),
+		.branchatall        (branchatall),
+		.bne            (bne),
 		.mem_write      (mem_write),
 		.alu_control    (alu_control),
 		.reg_write      (reg_write),
@@ -86,14 +86,14 @@ module instructionwrapperTest();
 
 	task testValuesD;
 
-		input branchE, exp_branchE, branchNE, exp_branchNE, mem_write, exp_mem_write, alu_control,   exp_alu_control; 
-		if ((branchE  == exp_branchE ) && (branchNE  == exp_branchNE ) && (mem_write  == exp_mem_write ) && (alu_control  == exp_alu_control ))begin
-			$display("Correct branchE, branchNE, mem_write, alu_control  ");
+		input branchatall, exp_branchatall, bne, exp_bne, mem_write, exp_mem_write, alu_control,   exp_alu_control; 
+		if ((branchatall  == exp_branchatall ) && (bne == exp_bne ) && (mem_write  == exp_mem_write ) && (alu_control  == exp_alu_control ))begin
+			$display("Correct branchatall, bne, mem_write, alu_control  ");
 		end
 		else begin
-			$display("IncorrectbranchE, branchNE, mem_write, alu_control");
-			$display(branchE );
-			$display(branchNE );
+			$display("Incorrect branchatall, bne, mem_write, alu_control");
+			$display(branchatall );
+			$display(bne );
 			$display(mem_write );
 			$display(alu_control );
 
@@ -133,8 +133,8 @@ module instructionwrapperTest();
 	    			1'b1, jump,
 	    			1'b1, jumpLink);
 	    testValuesD(
-	    			1'b0, branchE,
-	    			1'b0, branchNE,
+	    			1'b0, branchatall,
+	    			1'b0, bne,
 	    			1'b0, mem_write,
 	    			1'b1, alu_control);
 	    testValuesE(
@@ -155,8 +155,8 @@ module instructionwrapperTest();
 	    			1'b0, jump,
 	    			1'b0, jumpLink);
 	    testValuesD(
-	    			1'b0, branchE,
-	    			1'b0, branchNE,
+	    			1'b0, branchatall,
+	    			1'b0, bne,
 	    			1'b0, mem_write,
 	    			1'b0, alu_control);
 	    testValuesE(
@@ -181,8 +181,8 @@ module instructionwrapperTest();
 	    			1'b0, jump,
 	    			1'b0, jumpLink);
 	    testValuesD(
-	    			1'b0, branchE,
-	    			1'b0, branchNE,
+	    			1'b0, branchatall,
+	    			1'b0, bne,
 	    			1'b0, mem_write,
 	    			1'b1, alu_control);
 	    testValuesE(
@@ -202,8 +202,8 @@ module instructionwrapperTest();
 	    			1'b1, jump,
 	    			1'b0, jumpLink);
 	    testValuesD(
-	    			1'b0, branchE,
-	    			1'b0, branchNE,
+	    			1'b0, branchatall,
+	    			1'b0, bne,
 	    			1'b0, mem_write,
 	    			1'b0, alu_control);
 	    testValuesE(
