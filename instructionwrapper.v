@@ -18,15 +18,6 @@ module instructionwrapper
 );
 
 	wire ALU_src;
-	reg tempOp;
-	
-
-	always @(Instructions) begin
-		tempOp = Instructions[31:26];
-		if(tempOp == 6'b000000)begin
-		end
-		
-	end
 
 	instructionReadIType instructionReadIType(
 		.Instruction(Instructions),
@@ -39,12 +30,11 @@ module instructionwrapper
 	instructionReadJType instructionReadJType(
 		.Instruction(Instructions),
 		.addr(addr),
-		.Op(Op),
+		.Op(Op)
 	);
 
 	instructionReadRType instructionReadRType(
 		.Instruction(Instructions),
-		.addr(addr),
 		.Op(Op),
 		.Rs(Rs),
 		.Rt(Rt),

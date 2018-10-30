@@ -8,11 +8,11 @@ module instructionReadRType (
 	output[4:0] shift,
 	output[5:0] funct
 );
-	assign Op = instruction[31:26];
-	assign Rs = instruction[25:21];
-	assign Rt = instruction[20:16];
-	assign Rd = instruction[15:11];
-	assign shift = instruction[10:6];
-	assign funct = instruction[5:0];
+	assign Op = Instruction[31:26];
+	assign Rs = Instruction[25:21];
+	assign Rt = Instruction[20:16];
+	assign Rd = Instruction[15:11];
+	assign shift = Instruction[10:6];
+	assign funct = Instruction[5:0];
 
 endmodule
