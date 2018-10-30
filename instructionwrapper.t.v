@@ -80,10 +80,91 @@ module instructionwrapperTest();
 			$display("Incorrect addr:");
 			$display(addr);
 		end
+
+//
+		if (alu_src  == exp_alu_src ) begin
+			$display("Correct alu_src ");
+		end
+		else begin
+			$display("Incorrect alu_src:");
+			$display(alu_src);
+		end
 		
 
+		if (jump  == exp_jump) begin
+			$display("Correct jump ");
+		end
+		else begin
+			$display("Incorrect jump:");
+			$display(jump);
+		end
+		
+
+		if (jumpLink  == exp_jumpLink ) begin
+			$display("Correct jumpLink  ");
+		end
+		else begin
+			$display("IncorrectjumpLink:");
+			$display(jumpLink );
+		end
+		
+		if (branchE  == exp_branchE ) begin
+			$display("Correct branchE  ");
+		end
+		else begin
+			$display("IncorrectbranchE:");
+			$display(branchE );
+		end
+
+		if (branchNE  == exp_branchNE ) begin
+			$display("Correct branchNE  ");
+		end
+		else begin
+			$display("Incorrectbranch NE:");
+			$display(branchNE );
+		end
 
 
+		if (mem_write  == exp_mem_write ) begin
+			$display("Correct mem_write  ");
+		end
+		else begin
+			$display("Incorrect mem_write:");
+			$display(mem_write );
+		end
+
+		if (alu_control  == exp_alu_control ) begin
+			$display("Correct alu_control  ");
+		end
+		else begin
+			$display("Incorrect alu_control:");
+			$display(alu_control );
+		end
+//
+
+		if (reg_write  == exp_reg_write ) begin
+			$display("Correct reg_write  ");
+		end
+		else begin
+			$display("Incorrect reg_write:");
+			$display(reg_write );
+		end
+
+		if (regDst  == exp_regDst ) begin
+			$display("Correct regDst  ");
+		end
+		else begin
+			$display("Incorrect regDst:");
+			$display(regDst );
+		end
+
+		if (memToReg  == exp_memToReg ) begin
+			$display("Correct memToReg  ");
+		end
+		else begin
+			$display("Incorrect memToReg:");
+			$display(memToReg );
+		end
 
 	endtask
 
@@ -91,7 +172,17 @@ module instructionwrapperTest();
 	    instruction = 32'b00000000000000000000000000000000; #10
 	    checkResult(6'b000000, opcode, 5'b00000, 5'b00000, 5'b00000, Rs, Rt, Rd,
 	    			16'b000000000000000, imm,
-	    			26'b00000000000000000000000000, jump_target);
+	    			26'b00000000000000000000000000, addr,
+	    			1'b0, jump,
+	    			1'b0, jumpLink,
+	    			1'b0, branchE,
+	    			1'b0, branchNE,
+	    			1'b0, mem_write,
+	    			1'b0, alu_control,
+	    			1'b0, reg_write,
+	    			1'b0, regDst,
+	    			1'b0, memToReg
+	    );
 
 
 
