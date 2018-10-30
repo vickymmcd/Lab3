@@ -2,21 +2,31 @@
 `include "instructiondecode.v"
 `include "instructionReadJType.v"
 `include "instructionReadIType.v"
+`include "instructionReadRType.v"
 
 module instructionwrapper
 (
 
     input[31:0] Instructions,
 
-	output[4:0] Rs, Rd, Rt,
+	output[4:0] Rs, Rd, Rt, shift,
 	output[15:0] imm,
-	output[5:0] Op,
+	output[5:0] Op, funct,
 	output[25:0] addr,
     output[2:0] alu_src,
     output jump,jumpLink, branchE, branchNE,mem_write,alu_control,reg_write, regDst, memToReg      
 );
 
 	wire ALU_src;
+	reg tempOp;
+	
+
+	always @(Instructions) begin
+		tempOp = Instructions[31:26];
+		if(tempOp == 6'b000000)begin
+		end
+		
+	end
 
 	instructionReadIType instructionReadIType(
 		.Instruction(Instructions),
@@ -24,6 +34,23 @@ module instructionwrapper
 		.Op(Op),
 		.Rs(Rs),
 		.Rt(Rt)
+	);
+
+	instructionReadJType instructionReadJType(
+		.Instruction(Instructions),
+		.addr(addr),
+		.Op(Op),
+	);
+
+	instructionReadRType instructionReadRType(
+		.Instruction(Instructions),
+		.addr(addr),
+		.Op(Op),
+		.Rs(Rs),
+		.Rt(Rt),
+		.Rd(Rd),
+		.shift(shift),
+		.funct(funct)
 	);
 
     instructiondecode instructiondecode(

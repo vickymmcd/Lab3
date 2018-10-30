@@ -2,11 +2,10 @@
 module instructionReadJType (
 	input[31:0] Instruction,
 
-	output[15:0] imm,
 	output[5:0] Op,
-	output[25:0] Rt
+	output[25:0] addr
 );
 	assign Op = Instruction[31:26];
-	assign Rt = Instruction[25:0];
+	assign addr = Instruction[25:0];
 
 endmodule
