@@ -21,6 +21,8 @@
 `define alu_xor  3'd2
 `define alu_slt  3'd3
 
+`define RTypeFlag  6'b000000
+
 
     // When opcode is 0 and we have to look at the function
     // Since we dont have any R types do we need these?
@@ -32,7 +34,8 @@
 
 
 module instructiondecode( 
-	input[5:0] Op,  
+	input[5:0] Op,
+    input[5:0] funct,
     //input[5:0] function, // Not sure if needed
     
     output reg[2:0] alu_src,
@@ -202,6 +205,62 @@ always @(Op) begin
             mem_write = 0;
             memToReg = 0;
             regDst = 1; 
+        end
+        `RTypeFlag: begin
+            case(funct)
+                `JR_f: begin
+                    jump = 1;
+                    jumpReg = 1;
+                    branchE = 0;
+                    jumpLink =0;
+                    branchNE = 0;
+                    alu_src = `SUB;
+                    alu_control = 0;
+                    reg_write = 0;
+                    mem_write = 0;
+                    memToReg = 0;
+                    regDst = 0; 
+                end
+                `ADD_f: begin
+                    jump = 0;
+                    jumpReg = 0;
+                    branchE = 0;
+                    jumpLink =0;
+                    branchNE = 0;
+                    alu_src = `alu_add;
+                    alu_control = 1;
+                    reg_write = 1;
+                    mem_write = 0;
+                    memToReg = 0;
+                    regDst = 1; 
+                end
+                `SLT_f: begin
+                    jump = 0;
+                    jumpReg = 0;
+                    branchE = 0;
+                    jumpLink =0;
+                    branchNE = 0;
+                    alu_src = `alu_slt;
+                    alu_control = 1;
+                    reg_write = 1;
+                    mem_write = 0;
+                    memToReg = 0;
+                    regDst = 1;
+                end
+                `SUB_f: begin
+                    jump = 0;
+                    jumpReg = 0;
+                    branchE = 0;
+                    jumpLink =0;
+                    branchNE = 0;
+                    alu_src = `alu_sub;
+                    alu_control = 1;
+                    reg_write = 1;
+                    mem_write = 0;
+                    memToReg = 0;
+                    regDst = 1;
+                end
+            endcase
         end
     endcase
 
