@@ -6,6 +6,8 @@
 // Shift Register test bench
 module instructionwrapperTest();
 
+	wire imm, addr, Rs, Rd, Rt, alu_control, alu_src, jumpLink, jump, regDst,memToReg, Instructions, instructionType, branchNE, branchE, mem_write, reg_write;
+
 	instructionwrapper instructionwrapper(
 		.Instructions(Instructions),
 		.instructionType(instructionType),

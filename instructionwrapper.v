@@ -17,6 +17,7 @@ module instructionwrapper
     output jump,jumpLink, branchE, branchNE,mem_write,alu_control,reg_write, regDst, memToReg      
 );
 
+	wire ALU_src;
 
 	instructionReadIType instructionReadIType(
 		.Instruction(Instructions),

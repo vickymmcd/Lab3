@@ -1,3 +1,30 @@
+`timescale 1ns/1ps
+
+
+`define LW = 6'b100011; // Type: I
+`define SW = 6'b101011;
+`define J = 6'b000010; // Type: J 
+`define JAL = 6'b000011; // Type: J -> Jump and Link
+`define BEQ = 6'b000100; // Type: I
+`define BNE = 6'b000101; // Type: I
+`define XORI = 6'b001110; // Type: I
+`define ADDI = 6'b001000; // Type: I
+
+`define alu_add = 3'd0;
+`define alu_sub = 3'd1;
+`define alu_xor = 3'd2;
+`define alu_slt = 3'd3;
+
+
+    // When opcode is 0 and we have to look at the function
+    // Since we dont have any R types do we need these?
+`define JR_f = 6'h08;
+`define ADD_f = 6'h20;
+`define SLT_f = 6'h2a;
+`define SUB_f = 6'h22;
+
+
+
 module instructiondecode( 
 	input[5:0] Op,  
     //input[5:0] function, // Not sure if needed
@@ -8,27 +35,6 @@ module instructiondecode(
 
 	//Instructions: LW, SW, J, JR, JAL, BEQ, BNE, XORI, ADDI, ADD, SUB, SLT
     // Link: http://alumni.cs.ucr.edu/~vladimir/cs161/mips.html
-    localparameter LW = 6'b100011; // Type: I
-    localparameter SW = 6'b101011; // Type: I
-    localparameter J = 6'b000010; // Type: J 
-    localparameter JAL = 6'b000011; // Type: J -> Jump and Link
-    localparameter BEQ = 6'b000100; // Type: I
-    localparameter BNE = 6'b000101; // Type: I
-    localparameter XORI = 6'b001110; // Type: I
-    localparameter ADDI = 6'b001000; // Type: I
-
-    // ALU Control mapping
-    localparameter alu_add = 3'd0;
-    localparameter alu_sub = 3'd1;
-    localparameter alu_xor = 3'd2;
-    localparameter alu_slt = 3'd3;
-
-    // When opcode is 0 and we have to look at the function
-    // Since we dont have any R types do we need these?
-    localparameter JR_f = 6'h08;
-    localparameter ADD_f = 6'h20;
-    localparameter SLT_f = 6'h2a;
-    localparameter SUB_f = 6'h22;
 
 // VALUES ARE NOT SET YET 
 always @(Op) begin 
