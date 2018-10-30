@@ -235,7 +235,7 @@ output reg[2:0]    command
     $display("Reuslt %b",result);
   end
 
-
+  $display("Testing finished");
   #5
   endtest = 1;
   $finish();

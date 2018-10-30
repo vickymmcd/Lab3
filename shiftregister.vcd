@@ -1,0 +1,120 @@
+$date
+	Mon Oct 29 21:06:56 2018
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module testshiftregister $end
+$var wire 1 ! serialDataOut $end
+$var wire 8 " parallelDataOut [7:0] $end
+$var reg 1 # clk $end
+$var reg 8 $ parallelDataIn [7:0] $end
+$var reg 1 % parallelLoad $end
+$var reg 1 & peripheralClkEdge $end
+$var reg 1 ' serialDataIn $end
+$scope module dut $end
+$var wire 1 # clk $end
+$var wire 8 ( parallelDataIn [7:0] $end
+$var wire 8 ) parallelDataOut [7:0] $end
+$var wire 1 % parallelLoad $end
+$var wire 1 & peripheralClkEdge $end
+$var wire 1 ' serialDataIn $end
+$var wire 1 ! serialDataOut $end
+$var reg 8 * shiftregistermem [7:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+bx *
+bx )
+b10000000 (
+x'
+x&
+1%
+b10000000 $
+0#
+bx "
+x!
+$end
+#10000
+1!
+b10000000 "
+b10000000 )
+b10000000 *
+1#
+#20000
+0#
+1'
+1&
+0%
+#30000
+0!
+b1 "
+b1 )
+b1 *
+1#
+#40000
+0#
+b10101011 $
+b10101011 (
+1%
+#50000
+1!
+b10101011 "
+b10101011 )
+b10101011 *
+1#
+#60000
+0#
+b10000000 $
+b10000000 (
+#70000
+b10000000 "
+b10000000 )
+b10000000 *
+1#
+#80000
+0#
+0%
+#90000
+0!
+b1 "
+b1 )
+b1 *
+1#
+#100000
+0#
+0'
+#110000
+b10 "
+b10 )
+b10 *
+1#
+#120000
+0#
+#130000
+b100 "
+b100 )
+b100 *
+1#
+#140000
+0#
+1'
+#150000
+b1001 "
+b1001 )
+b1001 *
+1#
+#160000
+0#
+#170000
+b10011 "
+b10011 )
+b10011 *
+1#
+#180000
+0#
