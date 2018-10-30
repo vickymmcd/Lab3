@@ -6,7 +6,13 @@
 // Shift Register test bench
 module instructionwrapperTest();
 
-	wire imm, addr, Rs, Rd, Rt, alu_control, alu_src, jumpLink, jump, regDst,memToReg, Instructions, instructionType, branchNE, branchE, mem_write, reg_write;
+	reg[31:0] Instructions;
+	wire[15:0] imm;
+	wire[25:0] addr;
+	wire[4:0] Rs, Rd, Rt;
+	wire[5:0] Op;
+	wire[2:0]  alu_src;
+	wire alu_control,jumpLink, jump, regDst,memToReg, instructionType, branchNE, branchE, mem_write, reg_write;
 
 	instructionwrapper instructionwrapper(
 		.Instructions(Instructions),
@@ -15,6 +21,7 @@ module instructionwrapperTest();
 		.Rd             (Rd),
 		.Rt             (Rt),
 		.imm            (imm),
+		.Op			    (Op),
 		.addr           (addr),
 		.alu_src        (alu_src),
 		.jump           (jump),
@@ -29,14 +36,14 @@ module instructionwrapperTest();
 	);
 
 	task testValuesA;
-		input[5:0] exp_opcode, opcode;
+		input[5:0] exp_Op, Op;
 
-		if (opcode == exp_opcode) begin
+		if (Op == exp_Op) begin
 			$display("Correct OP code");
 		end
 		else begin
 			$display("Incorrect OP code:");
-			$display(opcode);
+			$display(Op);
 		end
 
 	endtask
@@ -59,7 +66,7 @@ module instructionwrapperTest();
 
 	task testValuesC;
 		input[25:0] exp_addr, addr;
-		input jump,jumpLink,  exp_jump,exp_jumpLink;
+		input jump,jumpLink,  exp_jump,exp_jumpLink, alu_src , exp_alu_src;
 
 		if ((addr  == exp_addr ) && (alu_src  == exp_alu_src ) && (jump  == exp_jump) && (jumpLink  == exp_jumpLink ))begin
 			$display("Correct addr, alu_src, jump, jumpLink ");
@@ -109,13 +116,14 @@ module instructionwrapperTest();
 	
 
 	initial begin
-	    instruction = 32'b00000000000000000000000000000000; #10
-	    testValuesA(6'b000000, opcode);
+	    Instructions = 32'b00000000000000000000000000000000; #10
+	    testValuesA(6'b000000, Op);
 	    testValuesB(5'b00000, 5'b00000, 5'b00000, Rs, Rt, Rd,
 	    			16'b000000000000000, imm);
 	    testValuesC(26'b00000000000000000000000000, addr,
 	    			1'b0, jump,
-	    			1'b0, jumpLink);
+	    			1'b0, jumpLink,
+	    			1'b0, alu_src);
 	    testValuesD(
 	    			1'b0, branchE,
 	    			1'b0, branchNE,
