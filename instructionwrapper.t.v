@@ -95,6 +95,7 @@ module instructionwrapperTest();
 			$display(branchNE );
 			$display(mem_write );
 			$display(alu_control );
+
 		end
 
 	endtask
@@ -110,6 +111,7 @@ module instructionwrapperTest();
 			$display(reg_write );
 			$display(regDst );
 			$display(memToReg );
+			$display(jumpReg );
 		end
 
 
@@ -136,7 +138,7 @@ module instructionwrapperTest();
 	    testValuesE(
 	    			1'b0, reg_write,
 	    			1'b0, regDst,
-	    			1'b0, memToReg
+	    			1'b0, memToReg,
 	    			1'b0, jumpReg);
 	    $display("END TEST 1 ---------------------------------------------");
 	    #10
@@ -158,7 +160,7 @@ module instructionwrapperTest();
 	    testValuesE(
 	    			1'b1, reg_write,
 	    			1'b1, regDst,
-	    			1'b1, memToReg
+	    			1'b1, memToReg,
 	    			1'b0, jumpReg);
 		$display("END TEST 2 ---------------------------------------------");
 
@@ -180,7 +182,7 @@ module instructionwrapperTest();
 	    testValuesE(
 	    			1'b1, reg_write,
 	    			1'b0, regDst,
-	    			1'b0, memToReg
+	    			1'b0, memToReg,
 	    			1'b0, jumpReg);
 		$display("END TEST 3 ---------------------------------------------");
 
@@ -206,7 +208,7 @@ module instructionwrapperTest();
 	    testValuesE(
 	    			1'b0, reg_write,
 	    			1'b1, regDst,
-	    			1'b1, memToReg
+	    			1'b1, memToReg,
 	    			1'b0, jumpReg);
 		$display("END TEST 4 ---------------------------------------------");
 

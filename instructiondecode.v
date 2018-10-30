@@ -3,7 +3,7 @@
 `define LW  6'b100011 // Type: I
 `define SW  6'b101011
 `define J  6'b000010 // Type: J
-`define JR 6'b001000
+//`define JR 6'b001000
 `define JAL  6'b000011 // Type: J -> Jump and Link
 `define BEQ  6'b000100 // Type: I
 `define BNE  6'b000101 // Type: I
@@ -24,10 +24,10 @@
 
     // When opcode is 0 and we have to look at the function
     // Since we dont have any R types do we need these?
-`define JR_f  6'h08;
-`define ADD_f  6'h20;
-`define SLT_f  6'h2a;
-`define SUB_f  6'h22;
+`define JR_f  6'b111111 // FIX THIS!!
+`define ADD_f  6'h20
+`define SLT_f  6'h2a
+`define SUB_f  6'h22
 
 
 
@@ -85,7 +85,7 @@ always @(Op) begin
             memToReg = 1;
             regDst = 1; 
         end
-        `JR: begin
+        `JR_f: begin
             jump = 1;
             jumpReg = 1;
             branchE = 0;
@@ -151,7 +151,6 @@ always @(Op) begin
             regDst = 0; 
         end
         `ADDI: begin
-            jumpReg = 0;
             jump = 0;
             branchE = 0;
             jumpLink =0;
@@ -162,11 +161,12 @@ always @(Op) begin
             mem_write = 0;
             memToReg = 0;
             regDst = 0; 
+            jumpReg = 0;
         end
         `ADD: begin
             jump = 0;
-            branchE = 0;
             jumpReg = 0;
+            branchE = 0;
             jumpLink =0;
             branchNE = 0;
             alu_src = `ADD;
