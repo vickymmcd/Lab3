@@ -48,7 +48,7 @@ module instructionwrapperTest();
 	endtask
 
 	task testValuesB;
-		input[4:0] exp_rs, exp_rt, exp_rd, Rs, Rt, Rd;
+		input[4:0] exp_rs, Rs, exp_rt, Rt, exp_rd, Rd;
 		input[15:0] exp_imm, imm;
 
 		if ((Rs == exp_rs) && (Rt == exp_rt) && (Rd == exp_rd) && (imm  == exp_imm ))begin
@@ -60,12 +60,14 @@ module instructionwrapperTest();
 			$display(Rt);
 			$display(imm);
 			$display(Rd);
+
 		end
 	endtask
 
 	task testValuesC;
 		input[25:0] exp_addr, addr;
-		input jump,jumpLink,  exp_jump,exp_jumpLink, alu_src , exp_alu_src;
+		input [2:0] exp_alu_src, alu_src;
+		input  exp_jump, jump, exp_jumpLink, jumpLink;
 
 		if ((addr  == exp_addr ) && (alu_src  == exp_alu_src ) && (jump  == exp_jump) && (jumpLink  == exp_jumpLink ))begin
 			$display("Correct addr, alu_src, jump, jumpLink ");
@@ -82,7 +84,7 @@ module instructionwrapperTest();
 
 	task testValuesD;
 
-		input branchE, branchNE,mem_write,alu_control, exp_branchE, exp_branchNE,exp_mem_write,exp_alu_control; 
+		input branchE, exp_branchE, branchNE, exp_branchNE, mem_write, exp_mem_write, alu_control,   exp_alu_control; 
 		if ((branchE  == exp_branchE ) && (branchNE  == exp_branchNE ) && (mem_write  == exp_mem_write ) && (alu_control  == exp_alu_control ))begin
 			$display("Correct branchE, branchNE, mem_write, alu_control  ");
 		end
@@ -98,7 +100,7 @@ module instructionwrapperTest();
 
 	task testValuesE;
 
-		input reg_write, regDst, memToReg,exp_reg_write, exp_regDst, exp_memToReg; 
+		input reg_write, exp_reg_write, regDst, exp_regDst, memToReg, exp_memToReg; 
 		if ((reg_write  == exp_reg_write ) && (regDst  == exp_regDst ) && (memToReg  == exp_memToReg ) ) begin
 			$display("Correct reg_write, regDst, memToReg  ");
 		end
@@ -115,23 +117,96 @@ module instructionwrapperTest();
 	
 
 	initial begin
+
+		// TODO: Finsih Test for R type
 	    Instructions = 32'b00000000000000000000000000000000; #10
 	    testValuesA(6'b000000, Op);
-	    testValuesB(5'b00000, 5'b00000, 5'b00000, Rs, Rt, Rd,
+	    testValuesB(5'b00000, Rs, 5'b00000, Rt,  5'b00000, Rd,
 	    			16'b000000000000000, imm);
-	    testValuesC(26'b00000000000000000000000000, addr,
+	    testValuesC(26'b00000000000000000000000001, addr,
+	    			3'b000, alu_src,
+	    			1'bX, jump,
+	    			1'bX, jumpLink);
+	    testValuesD(
+	    			1'b0, branchE,
+	    			1'b0, branchNE,
+	    			1'b0, mem_write,
+	    			1'b1, alu_control);
+	    testValuesE(
+	    			1'b0, reg_write,
+	    			1'b0, regDst,
+	    			1'b0, memToReg);
+	    $display("END TEST 1 ---------------------------------------------");
+	    #10
+
+	    // Testing Jump and Link Values
+	    Instructions = 32'b00001100000000000000000000000111; #10
+	    testValuesA(6'b000011, Op);
+	    testValuesB(5'b00000, Rs, 5'b00000, Rt, 5'b00000, Rd,
+	    			16'b000000000000111, imm);
+	    testValuesC(26'b00000000000000000000000111, addr,
+	    			3'b000, alu_src,
+	    			1'b1, jump,
+	    			1'b1, jumpLink);
+	    testValuesD(
+	    			1'b0, branchE,
+	    			1'b0, branchNE,
+	    			1'b0, mem_write,
+	    			1'b1, alu_control);
+	    testValuesE(
+	    			1'b1, reg_write,
+	    			1'b1, regDst,
+	    			1'b1, memToReg);
+		$display("END TEST 2 ---------------------------------------------");
+
+		// Testing addI values
+	    #10
+	    Instructions = 32'b00100000010000011110000000000000; #10
+	    testValuesA(6'b001000, Op);
+	    testValuesB(5'b00010, Rs, 5'b00001,Rt,  5'b11100,  Rd,
+	    			16'b1110000000000000, imm);
+	    testValuesC(26'b00010000011110000000000000, addr,
+	    			3'b000, alu_src,
 	    			1'b0, jump,
-	    			1'b0, jumpLink,
-	    			1'b0, alu_src);
+	    			1'b0, jumpLink);
 	    testValuesD(
 	    			1'b0, branchE,
 	    			1'b0, branchNE,
 	    			1'b0, mem_write,
 	    			1'b0, alu_control);
 	    testValuesE(
-	    			1'b0, reg_write,
+	    			1'b1, reg_write,
 	    			1'b0, regDst,
 	    			1'b0, memToReg);
+		$display("END TEST 3 ---------------------------------------------");
+
+
+		// 32'b000100|00000|00000|0000000000000000; #10
+
+
+		// Testing LW values
+	    #10
+	    Instructions = 32'b10001100010000011110000000000000; #10
+	    testValuesA(6'b100011, Op);
+	    testValuesB(5'b00010, Rs, 5'b00001,Rt,  5'b11100,  Rd,
+	    			16'b1110000000000000, imm);
+	    testValuesC(26'b00010000011110000000000000, addr,
+	    			3'b000, alu_src,
+	    			1'b0, jump,
+	    			1'b0, jumpLink);
+	    testValuesD(
+	    			1'b0, branchE,
+	    			1'b0, branchNE,
+	    			1'b0, mem_write,
+	    			1'b1, alu_control);
+	    testValuesE(
+	    			1'b0, reg_write,
+	    			1'b1, regDst,
+	    			1'b1, memToReg);
+		$display("END TEST 4 ---------------------------------------------");
+
+
+
 
 	end
 

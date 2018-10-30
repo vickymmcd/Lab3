@@ -134,7 +134,7 @@ always @(Op) begin
             branchE = 0;
             jumpLink =0;
             branchNE = 0;
-            alu_src = `ADD;
+            alu_src = `alu_add;
             alu_control = 0;
             reg_write = 1;
             mem_write = 0;
