@@ -10,7 +10,7 @@ module instructionwrapperTest();
 	wire[15:0] imm;
 	wire[25:0] addr;
 	wire[4:0] Rs, Rd, Rt;
-	wire[5:0] Op;
+	wire[5:0] Op, funct;
 	wire[2:0]  alu_src;
 	wire alu_control,jumpLink, jump, jumpReg, regDst,memToReg, branchNE, branchE, mem_write, reg_write;
 
@@ -21,6 +21,7 @@ module instructionwrapperTest();
 		.Rt             (Rt),
 		.imm            (imm),
 		.Op			    (Op),
+		.funct          (funct),
 		.addr           (addr),
 		.alu_src        (alu_src),
 		.jump           (jump),
@@ -121,27 +122,6 @@ module instructionwrapperTest();
 
 	initial begin
 
-		// TODO: Finsih Test for R type
-	    Instructions = 32'b00000000000000000000000000000000; #10
-	    testValuesA(6'b000000, Op);
-	    testValuesB(5'b00000, Rs, 5'b00000, Rt,  5'b00000, Rd,
-	    			16'b000000000000000, imm);
-	    testValuesC(26'b00000000000000000000000001, addr,
-	    			3'b000, alu_src,
-	    			1'bX, jump,
-	    			1'bX, jumpLink);
-	    testValuesD(
-	    			1'b0, branchE,
-	    			1'b0, branchNE,
-	    			1'b0, mem_write,
-	    			1'b1, alu_control);
-	    testValuesE(
-	    			1'b0, reg_write,
-	    			1'b0, regDst,
-	    			1'b0, memToReg,
-	    			1'b0, jumpReg);
-	    $display("END TEST 1 ---------------------------------------------");
-	    #10
 
 	    // Testing Jump and Link Values
 	    Instructions = 32'b00001100000000000000000000000111; #10
@@ -162,7 +142,7 @@ module instructionwrapperTest();
 	    			1'b1, regDst,
 	    			1'b1, memToReg,
 	    			1'b0, jumpReg);
-		$display("END TEST 2 ---------------------------------------------");
+		$display("END TEST 1 ---------------------------------------------");
 
 		// Testing addI values
 	    #10
@@ -184,7 +164,7 @@ module instructionwrapperTest();
 	    			1'b0, regDst,
 	    			1'b0, memToReg,
 	    			1'b0, jumpReg);
-		$display("END TEST 3 ---------------------------------------------");
+		$display("END TEST 2 ---------------------------------------------");
 
 
 		// 32'b000100|00000|00000|0000000000000000; #10
@@ -210,8 +190,28 @@ module instructionwrapperTest();
 	    			1'b1, regDst,
 	    			1'b1, memToReg,
 	    			1'b0, jumpReg);
-		$display("END TEST 4 ---------------------------------------------");
+		$display("END TEST 3 ---------------------------------------------");
 
+		// R type: JR
+	    Instructions = 32'b00000000011000100000100000001000; #10
+	    testValuesA(6'b000000, Op);
+	    testValuesB(5'b00011, Rs, 5'b00010, Rt,  5'b00001, Rd,
+	    			16'b0000100000001000, imm);
+	    testValuesC(26'b00011000100000100000001000, addr,
+	    			3'd1, alu_src,
+	    			1'b1, jump,
+	    			1'b0, jumpLink);
+	    testValuesD(
+	    			1'b0, branchE,
+	    			1'b0, branchNE,
+	    			1'b0, mem_write,
+	    			1'b0, alu_control);
+	    testValuesE(
+	    			1'b0, reg_write,
+	    			1'b0, regDst,
+	    			1'b0, memToReg,
+	    			1'b1, jumpReg);
+	    $display("END TEST 4 ---------------------------------------------");
 
 
 

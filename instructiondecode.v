@@ -10,10 +10,6 @@
 `define XORI  6'b001110 // Type: I
 `define ADDI 6'b001000 // Type: I
 
-`define ADD  6'b100000 // Type: R
-`define SUB 6'b100010 // Type: R
-`define SLT  6'b101010 // Type: R
-
 `define XOR  6'b100110
 
 `define alu_add  3'd0
@@ -26,7 +22,7 @@
 
     // When opcode is 0 and we have to look at the function
     // Since we dont have any R types do we need these?
-`define JR_f  6'b111111 // FIX THIS!!
+`define JR_f  6'b001000
 `define ADD_f  6'h20
 `define SLT_f  6'h2a
 `define SUB_f  6'h22
@@ -45,8 +41,6 @@ module instructiondecode(
 	//Instructions: LW, SW, J, JR, JAL, BEQ, BNE, XORI, ADDI, ADD, SUB, SLT
     // Link: http://alumni.cs.ucr.edu/~vladimir/cs161/mips.html
 
-
-// VALUES ARE NOT SET YET 
 always @(Op) begin 
     case(Op)
         `LW: begin
@@ -88,19 +82,6 @@ always @(Op) begin
             memToReg = 1;
             regDst = 1; 
         end
-        `JR_f: begin
-            jump = 1;
-            jumpReg = 1;
-            branchE = 0;
-            jumpLink =0;
-            branchNE = 0;
-            alu_src = 000; // dosent matter
-            alu_control = 1;
-            reg_write = 0;
-            mem_write = 0;
-            memToReg = 1;
-            regDst = 1; 
-        end
         `JAL: begin
             jump = 1;
             jumpReg = 0;
@@ -120,7 +101,7 @@ always @(Op) begin
             branchE = 1;
             jumpLink =0;
             branchNE = 1;
-            alu_src = `SUB;
+            alu_src = `alu_sub;
             alu_control = 1;
             reg_write = 1;
             mem_write = 0;
@@ -133,7 +114,7 @@ always @(Op) begin
             branchE = 1;
             jumpLink =0;
             branchNE = 1;
-            alu_src = `SUB;
+            alu_src = `alu_sub;
             alu_control = 1;
             reg_write = 1;
             mem_write = 0;
@@ -146,7 +127,7 @@ always @(Op) begin
             branchE = 0;
             jumpLink =0;
             branchNE = 0;
-            alu_src = `XOR;
+            alu_src = `alu_xor;
             alu_control = 0;
             reg_write = 1;
             mem_write = 0;
@@ -166,46 +147,6 @@ always @(Op) begin
             regDst = 0; 
             jumpReg = 0;
         end
-        `ADD: begin
-            jump = 0;
-            jumpReg = 0;
-            branchE = 0;
-            jumpLink =0;
-            branchNE = 0;
-            alu_src = `ADD;
-            alu_control = 1;
-            reg_write = 1;
-            mem_write = 0;
-            memToReg = 0;
-            regDst = 1; 
-        end
-
-        `SUB: begin
-            jump = 0;
-            jumpReg = 0;
-            branchE = 0;
-            jumpLink =0;
-            branchNE = 0;
-            alu_src = `SUB;
-            alu_control = 1;
-            reg_write = 1;
-            mem_write = 0;
-            memToReg = 0;
-            regDst = 1; 
-        end
-        `SLT: begin
-            jump = 0;
-            jumpReg = 0;
-            branchE = 0;
-            jumpLink =0;
-            branchNE = 0;
-            alu_src = `SUB;
-            alu_control = 1;
-            reg_write = 1;
-            mem_write = 0;
-            memToReg = 0;
-            regDst = 1; 
-        end
         `RTypeFlag: begin
             case(funct)
                 `JR_f: begin
@@ -214,7 +155,7 @@ always @(Op) begin
                     branchE = 0;
                     jumpLink =0;
                     branchNE = 0;
-                    alu_src = `SUB;
+                    alu_src = `alu_sub;
                     alu_control = 0;
                     reg_write = 0;
                     mem_write = 0;
@@ -267,3 +208,45 @@ always @(Op) begin
 end
 
 endmodule
+
+
+        // `ADD: begin
+        //     jump = 0;
+        //     jumpReg = 0;
+        //     branchE = 0;
+        //     jumpLink =0;
+        //     branchNE = 0;
+        //     alu_src = `alu_add;
+        //     alu_control = 1;
+        //     reg_write = 1;
+        //     mem_write = 0;
+        //     memToReg = 0;
+        //     regDst = 1; 
+        // end
+
+        // `SUB: begin
+        //     jump = 0;
+        //     jumpReg = 0;
+        //     branchE = 0;
+        //     jumpLink =0;
+        //     branchNE = 0;
+        //     alu_src = `alu_sub;
+        //     alu_control = 1;
+        //     reg_write = 1;
+        //     mem_write = 0;
+        //     memToReg = 0;
+        //     regDst = 1; 
+        // end
+        // `SLT: begin
+        //     jump = 0;
+        //     jumpReg = 0;
+        //     branchE = 0;
+        //     jumpLink =0;
+        //     branchNE = 0;
+        //     alu_src = `alu_sub;
+        //     alu_control = 1;
+        //     reg_write = 1;
+        //     mem_write = 0;
+        //     memToReg = 0;
+        //     regDst = 1; 
+        // end

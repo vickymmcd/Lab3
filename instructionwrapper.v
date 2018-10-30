@@ -45,7 +45,7 @@ module instructionwrapper
 	);
 
     instructiondecode instructiondecode(
-        .Op(Op), //.funct(funct), // inputs
+        .Op(Op), .funct(funct), // inputs
         .alu_src(alu_src),  // rest are outputs
         .jump(jump), .jumpLink(jumpLink), .jumpReg(jumpReg),
         .branchNE(branchNE), .branchE(branchE),
