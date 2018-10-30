@@ -2,7 +2,8 @@
 
 `define LW  6'b100011 // Type: I
 `define SW  6'b101011
-`define J  6'b000010 // Type: J 
+`define J  6'b000010 // Type: J
+`define JR 6'b001000
 `define JAL  6'b000011 // Type: J -> Jump and Link
 `define BEQ  6'b000100 // Type: I
 `define BNE  6'b000101 // Type: I
@@ -35,7 +36,7 @@ module instructiondecode(
     //input[5:0] function, // Not sure if needed
     
     output reg[2:0] alu_src,
-    output reg jump,jumpLink, branchE, branchNE,mem_write,alu_control,reg_write, regDst, memToReg                      
+    output reg jump,jumpLink, jumpReg, branchE, branchNE,mem_write,alu_control,reg_write, regDst, memToReg                      
 );
 
 	//Instructions: LW, SW, J, JR, JAL, BEQ, BNE, XORI, ADDI, ADD, SUB, SLT
@@ -47,6 +48,7 @@ always @(Op) begin
     case(Op)
         `LW: begin
             jump = 0;
+            jumpReg = 0;
             branchE = 0;
             jumpLink =0;
             branchNE = 0;
@@ -59,6 +61,7 @@ always @(Op) begin
         end
         `SW: begin
             jump = 0;
+            jumpReg = 0;
             branchE = 0;
             jumpLink =0;
             branchNE = 0;
@@ -71,6 +74,20 @@ always @(Op) begin
         end
         `J: begin
             jump = 1;
+            jumpReg = 0;
+            branchE = 0;
+            jumpLink =0;
+            branchNE = 0;
+            alu_src = 000; // dosent matter
+            alu_control = 1;
+            reg_write = 0;
+            mem_write = 0;
+            memToReg = 1;
+            regDst = 1; 
+        end
+        `JR: begin
+            jump = 1;
+            jumpReg = 1;
             branchE = 0;
             jumpLink =0;
             branchNE = 0;
@@ -83,6 +100,7 @@ always @(Op) begin
         end
         `JAL: begin
             jump = 1;
+            jumpReg = 0;
             branchE = 0;
             jumpLink =1;
             branchNE = 0;
@@ -94,6 +112,7 @@ always @(Op) begin
             regDst = 1;     
         end
         `BEQ: begin
+            jumpReg = 0;
             jump = 0;
             branchE = 1;
             jumpLink =0;
@@ -106,6 +125,7 @@ always @(Op) begin
             regDst = 1; 
         end
         `BNE: begin
+            jumpReg = 0;
             jump = 0;
             branchE = 1;
             jumpLink =0;
@@ -119,6 +139,7 @@ always @(Op) begin
         end
         `XORI: begin
             jump = 0;
+            jumpReg = 0;
             branchE = 0;
             jumpLink =0;
             branchNE = 0;
@@ -130,6 +151,7 @@ always @(Op) begin
             regDst = 0; 
         end
         `ADDI: begin
+            jumpReg = 0;
             jump = 0;
             branchE = 0;
             jumpLink =0;
@@ -144,6 +166,7 @@ always @(Op) begin
         `ADD: begin
             jump = 0;
             branchE = 0;
+            jumpReg = 0;
             jumpLink =0;
             branchNE = 0;
             alu_src = `ADD;
@@ -156,6 +179,7 @@ always @(Op) begin
 
         `SUB: begin
             jump = 0;
+            jumpReg = 0;
             branchE = 0;
             jumpLink =0;
             branchNE = 0;
@@ -168,6 +192,7 @@ always @(Op) begin
         end
         `SLT: begin
             jump = 0;
+            jumpReg = 0;
             branchE = 0;
             jumpLink =0;
             branchNE = 0;

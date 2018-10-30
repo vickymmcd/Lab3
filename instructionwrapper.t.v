@@ -12,7 +12,7 @@ module instructionwrapperTest();
 	wire[4:0] Rs, Rd, Rt;
 	wire[5:0] Op;
 	wire[2:0]  alu_src;
-	wire alu_control,jumpLink, jump, regDst,memToReg, branchNE, branchE, mem_write, reg_write;
+	wire alu_control,jumpLink, jump, jumpReg, regDst,memToReg, branchNE, branchE, mem_write, reg_write;
 
 	instructionwrapper instructionwrapper(
 		.Instructions(Instructions),
@@ -25,6 +25,7 @@ module instructionwrapperTest();
 		.alu_src        (alu_src),
 		.jump           (jump),
 		.jumpLink       (jumpLink),
+		.jumpReg        (jumpReg),
 		.branchE        (branchE),
 		.branchNE       (branchNE),
 		.mem_write      (mem_write),
@@ -100,7 +101,7 @@ module instructionwrapperTest();
 
 	task testValuesE;
 
-		input reg_write, exp_reg_write, regDst, exp_regDst, memToReg, exp_memToReg; 
+		input reg_write, exp_reg_write, regDst, exp_memToReg, exp_regDst, memToReg, exp_jumpReg, jumpReg; 
 		if ((reg_write  == exp_reg_write ) && (regDst  == exp_regDst ) && (memToReg  == exp_memToReg ) ) begin
 			$display("Correct reg_write, regDst, memToReg  ");
 		end
@@ -135,7 +136,8 @@ module instructionwrapperTest();
 	    testValuesE(
 	    			1'b0, reg_write,
 	    			1'b0, regDst,
-	    			1'b0, memToReg);
+	    			1'b0, memToReg
+	    			1'b0, jumpReg);
 	    $display("END TEST 1 ---------------------------------------------");
 	    #10
 
@@ -156,7 +158,8 @@ module instructionwrapperTest();
 	    testValuesE(
 	    			1'b1, reg_write,
 	    			1'b1, regDst,
-	    			1'b1, memToReg);
+	    			1'b1, memToReg
+	    			1'b0, jumpReg);
 		$display("END TEST 2 ---------------------------------------------");
 
 		// Testing addI values
@@ -177,7 +180,8 @@ module instructionwrapperTest();
 	    testValuesE(
 	    			1'b1, reg_write,
 	    			1'b0, regDst,
-	    			1'b0, memToReg);
+	    			1'b0, memToReg
+	    			1'b0, jumpReg);
 		$display("END TEST 3 ---------------------------------------------");
 
 
@@ -202,7 +206,8 @@ module instructionwrapperTest();
 	    testValuesE(
 	    			1'b0, reg_write,
 	    			1'b1, regDst,
-	    			1'b1, memToReg);
+	    			1'b1, memToReg
+	    			1'b0, jumpReg);
 		$display("END TEST 4 ---------------------------------------------");
 
 
