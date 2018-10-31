@@ -5,6 +5,7 @@
 `include "regfile.v"
 `include "shiftregister.v"
 `include "datamemory.v"
+`include "mux32bitsel.v"
 
 `define AND and #50 // tentatively change delay in AND
 
@@ -21,28 +22,66 @@ module CPU
 
   // wires for PC
   wire[31:0] PCaddr, PCupdated, PCplusfour;
-
+  wire carryoutPC, zeroPC, overflowPC;
   // wires for Jump, JAL, JR
-  wire[31:0] jumpaddr, addedshiftedimm;
-  // Need wires for Branch
+  wire[31:0] jumpaddr, PCfourimm, jumpaddrPC;
+  // wires for branch
+  wire mux3sel;
 
   // wires for sign extend
   wire[31:0] extendedimm, shiftedimm;
-  wire carryout, zero, overflow;
+  wire carryoutIm, zeroIm, overflowIm;
 
   // wires for reg
-  wire writebackreg, addrwrite;
+  wire carryoutReg, zeroReg, overflowReg;
+  wire[31:0] writebackreg, addrwrite;
+
+  // control signals
+  wire[4:0] Rs, Rd, Rt, shift;
+  wire[15:0] imm;
+  wire[5:0] Op, funct;
+  wire[25:0] addr;
+  wire[2:0] alu_src;
+  wire jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg;     
+
+
+  // data A and B
+  wire[31:0] Da, Db;
+  wire[31:0] selB;
+  wire[31:0] DataOut, DataOutMem;
+
 
   ///////////////// figure out what should we do for declaring input type
   instructionwrapper instrwrpr(Instructions, 1, Rs, Rd, Rt, immediate, Op, addr, alu_src, jump, jumpLink, branchE, branchNE, mem_write,alu_control,reg_write, regDst, memToReg);
 
-  ///////////////// PC will be updated /////////////
-  alu pcalu1(PCplusfour, carryout, zero, overflow, PC, 32'd4, 3'b000);
+  ///////////////// PC input? will be updated /////////////
+  alu alu1(PCplusfour, carryoutPC, zeroPC, overflowPC, PCupdated, 32'd4, 3'b000);
 
   signextend signextended(immediate, clk, extendedimm, shiftedimm);
   // 
-  alu pcalu2(PCfourimm, carryout, zero, overflow, PCplusfour, extendedimm, 3'b000);
+  alu alu2(PCfourimm, carryoutIm, zeroIm, overflowIm, PCplusfour, shiftedimm, 3'b000);
   // need to figure out how to use a mux to decide between different PC values
+
+  mux32bitsel mux1(writebackreg, jumpLink, PCplusfour, writebackDout);
+
+  regfile registerfile(Da, Db, writebackreg, Rs, Rd, Rt, reg_write, clk);
+  mux32bitsel mux2(selB, alu_control, Db, extendedimm);
+
+  alu alu3(DataOut, carryoutReg, zeroReg, overflowReg, Da, selB, alu_src);
+
+  datamemory Dmem(clk, writebackDout, DataOutMem, mem_write, Db);
+
+  mux32bitsel mux3(writebackDout, memToReg, DataOut, DataOutMem);
+
+  AND mux3selAND(mux3sel,branchE,branchNE);
+
+  mux32bitsel mux4(jumpaddr, mux3sel, PCplusfour, PCfourimm);
+  mux32bitsel mux5(jumpaddrPC, regDst, jumpaddr, Da);
+
+
+  // address to jump to is 26????
+  mux32bitsel mux6(PCaddr, jump, jumpaddrPC, addr);
+
 
 
 endmodule
