@@ -5,19 +5,19 @@ module branch
   input zero,
   input branchatall,
   input bne,
-  output branch
+  output reg branch
 );
 
-wire [1:0] inputs;
-inputs[0] = zero;
-inputs[1] = !zero;
 wire out;
-mux2to1 mux(out, bne, inputs);
-if (out && branchatall) begin
-  assign branch = 1;
-end
-else begin
-  assign branch = 0;
+mux2to1 mux(.out(out), .address(bne), .input1(zero), .input2(!zero));
+
+always @* begin
+  if (out==1 && branchatall==1) begin
+    branch <= 1;
+  end
+  else begin
+    branch <= 0;
+  end
 end
 
 endmodule

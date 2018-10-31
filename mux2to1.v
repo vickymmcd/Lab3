@@ -1,13 +1,18 @@
 
 module mux2to1(
-	output      out,
+	output reg     out,
 	input       address,
-	input[1:0]  inputs
+	input  input1,
+	input input2
 );
 
-
+always @* begin
      // Join single-bit inputs into a bus, use address as index
-	assign out=inputs[address];
+		 if (address == 0)
+		 	out<=input1;
+		else
+			out<=input2;
 
+end
 
 endmodule
