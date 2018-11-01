@@ -51,10 +51,6 @@ module CPU
   // signextend for jump addr
   wire[31:0] extendedaddr, shiftedaddr;
 
-  initial begin
-    $display(PCaddr);
-  end
-
 
   DFF pc(.clk(clk),.reset(reset),.enable(1'b1),.in(PCaddr), .out(PCupdated));
 

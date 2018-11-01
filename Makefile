@@ -16,8 +16,8 @@ WAVEOPTS := filters/$(WAVEFORM:vcd=gtkw)
 $(WAVEFORM): settings.mk
 	$(MAKE) -C asmtest $(TEXTMEMDUMP) $(DATAMEMDUMP)
 	$(MAKE) -C verilog $(TOPLEVEL).vvp
-	$(SIM) verilog/$(TOPLEVEL).vvp +mem_text_fn=asmtest/JumpingFoxes/$(TEXTMEMDUMP) \
-                                       +mem_data_fn=asmtest/JumpingFoxes$(DATAMEMDUMP) \
+	$(SIM) verilog/$(TOPLEVEL).vvp +mem_text_fn=asmtest/$(TEXTMEMDUMP) \
+                                       +mem_data_fn=asmtest/$(DATAMEMDUMP) \
                                        +dump_fn=$@
 
 
