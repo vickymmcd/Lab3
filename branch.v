@@ -1,4 +1,4 @@
-`include "mux2to1.v"
+`include "mux32bitsel.v"
 
 module branch
 (
@@ -9,7 +9,7 @@ module branch
 );
 
 wire out;
-mux2to1 mux(.out(out), .address(bne), .input1(zero), .input2(!zero));
+mux2to1 mux21(.out(out), .address(bne), .input1(zero), .input2(!zero));
 
 always @* begin
   if (out==1 && branchatall==1) begin

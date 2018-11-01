@@ -5,10 +5,8 @@
 `include "regfile.v"
 `include "shiftregister.v"
 `include "datamemory.v"
-`include "mux32bitsel.v"
-
-`define AND and #50 // tentatively change delay in AND
-
+// `include "mux32bitsel.v"
+`include "branch.v"
 
 module CPU
 (
@@ -51,13 +49,15 @@ module CPU
   wire[31:0] selB;
   wire[31:0] DataOut, DataOutMem;
 
+  // signextend for jump addr
+  wire[31:0] extendedaddr, shiftedaddr;
 
   ///////////////// figure out what should we do for declaring input type
   instructionwrapper instrwrpr(Instructions, Rs, Rd, Rt, shift, imm, Op, funct, addr, alu_src, jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg);
   ///////////////// PC input? will be updated /////////////
   ALU alu1(PCplusfour, carryoutPC, zeroPC, overflowPC, PCupdated, 32'd4, 3'b000);
 
-  signextend signextended(imm, clk, extendedimm, shiftedimm);
+  signextend signextended(imm, extendedimm, shiftedimm);
   // 
   ALU alu2(PCfourimm, carryoutIm, zeroIm, overflowIm, PCplusfour, shiftedimm, 3'b000);
   // need to figure out how to use a mux to decide between different PC values
@@ -73,14 +73,16 @@ module CPU
 
   mux32bitsel mux3(writebackDout, memToReg, DataOut, DataOutMem);
 
-  `AND mux3selAND(mux3sel,branchE,branchNE);
+  // `AND mux3selAND(mux3sel,branchatall,bne);
 
+  branch branchinstr(zeroIm, branchatall, bne, mux3sel);
   mux32bitsel mux4(jumpaddr, mux3sel, PCplusfour, PCfourimm);
-  mux32bitsel mux5(jumpaddrPC, regDst, jumpaddr, Da);
+  mux32bitsel mux5(jumpaddrPC, jumpReg, jumpaddr, Da);
 
 
-  // address to jump to is 26????
-  mux32bitsel mux6(PCaddr, jump, jumpaddrPC, addr);
+  // sign extend to addr
+  signextend #(25) signextendjump(addr, extendedaddr, shiftedaddr);
+  mux32bitsel mux6(PCaddr, jump, jumpaddrPC, extendedaddr);
 
 
 
