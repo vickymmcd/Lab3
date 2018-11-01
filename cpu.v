@@ -5,16 +5,18 @@
 `include "regfile.v"
 `include "shiftregister.v"
 `include "datamemory.v"
+`include "DFF.v"
 // `include "mux32bitsel.v"
 `include "branch.v"
+`timescale 1ns/1ps
 
 module CPU
 (
-  input clk, // Since the instructions are storded in data memeroy, we only need the clock
+  input clk // Since the instructions are storded in data memeroy, we only need the clock
 );
 
   // wires for PC
-  wire[31:0] PCaddr, PCupdated, PCplusfour;
+  wire[31:0] PCaddr, PCupdated, PCplusfour, writebackDout;
   wire carryoutPC, zeroPC, overflowPC;
   // wires for Jump, JAL, JR
   wire[31:0] jumpaddr, PCfourimm, jumpaddrPC;
@@ -49,7 +51,7 @@ module CPU
   // signextend for jump addr
   wire[31:0] extendedaddr, shiftedaddr;
 
-  DFF pc(.out(PCupdated),.clk(clk),.in(PCaddr),.enable(1));
+  DFF pc(.clk(clk),.enable(1'b1),.in(PCaddr), .out(PCupdated));
 
   instructionwrapper instrwrpr(MemoryDb, Rs, Rd, Rt, shift, imm, Op, funct, addr, alu_src, jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg);
 

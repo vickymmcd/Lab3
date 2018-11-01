@@ -14,6 +14,8 @@
 `define NOR_ALU  3'd6
 `define OR_ALU   3'd7
 
+`timescale 1ns/1ps
+
 
 module ALUcontrolLUT
 (
@@ -46,7 +48,7 @@ module structuralMultiplexer
     input in0, in1, in2, in3
 );
 
-    wire notA0, notA1, A0andA1, notA0andA1, notA0andnotA1;
+    wire notA0, notA1, A0andA1, notA0andA1, notA0andnotA1, A0andnotA1;
     wire in0and, in1and, in2and, in3and;
 
     `NOT not1(notA0, addr0);
