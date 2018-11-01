@@ -14,12 +14,12 @@ module datamemory
 )
 (
     input 		                clk,
-    output reg [width-1:0]      dataOut,
+    output [width-1:0]      dataOut,
     input [addresswidth-1:0]    address,
     input                       writeEnable,
     input [width-1:0]           dataIn,
     input [width-1:0]           instructionAddr,
-    input [width-1:0]           instructionOut
+    output [width-1:0]           instructionOut
 );
 
     reg [31:0] memory[1023:0];  // is this supose to be bigger? 4095
@@ -30,6 +30,8 @@ module datamemory
             memory[address] <= dataIn;
     end
     // assign dataOut = memory[address]; OLD
+
+    //initial $readmemh("InstructionExample.dat", memory);
     assign dataOut = memory[address];
     assign instructionOut = memory[instructionAddr];
 

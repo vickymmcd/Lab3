@@ -17,7 +17,8 @@ module CPU
 );
 
   // wires for PC
-  wire[31:0] PCaddr, PCupdated, PCplusfour, writebackDout;
+  wire[31:0] PCaddr;
+  wire[31:0] PCupdated, PCplusfour, writebackDout;
   wire carryoutPC, zeroPC, overflowPC;
   // wires for Jump, JAL, JR
   wire[31:0] jumpaddr, PCfourimm, jumpaddrPC;
@@ -47,12 +48,15 @@ module CPU
   wire[31:0] selB;
   wire[31:0] DataOut, DataOutMem;
 
-  assign mem_write = 0;
-
   // signextend for jump addr
   wire[31:0] extendedaddr, shiftedaddr;
 
-  DFF pc(.clk(clk),.enable(1'b1),.in(PCaddr), .out(PCupdated));
+  initial begin
+    $display(PCaddr);
+  end
+
+
+  DFF pc(.clk(clk),.reset(reset),.enable(1'b1),.in(PCaddr), .out(PCupdated));
 
   instructionwrapper instrwrpr(MemoryDb, Rs, Rd, Rt, shift, imm, Op, funct, addr, alu_src, jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg);
 
@@ -70,7 +74,7 @@ module CPU
 
   ALU alu3(DataOut, carryoutReg, zeroReg, overflowReg, Da, selB, alu_src);
 
-  datamemory Dmem(clk, writebackDout, PCupdated, mem_write, MemoryDb); // I AM CHANGING THE ADDRESED TO BE the PC
+  datamemory Dmem(.clk(clk), .dataOut(DataOutMem), .address(PCupdated), .writeEnable(mem_write), .dataIn(Db), .instructionAddr(PCupdated), .instructionOut(MemoryDb)); // I AM CHANGING THE ADDRESED TO BE the PC
 
   mux32bitsel mux3(writebackDout, memToReg, DataOut, DataOutMem);
 
