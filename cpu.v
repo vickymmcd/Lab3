@@ -49,7 +49,7 @@ module CPU
   // signextend for jump addr
   wire[31:0] extendedaddr, shiftedaddr;
 
-  DFF pc(.out(PCupdated),.clk(clk),.in(PCaddr),.enable(1))
+  DFF pc(.out(PCupdated),.clk(clk),.in(PCaddr),.enable(1));
 
   instructionwrapper instrwrpr(MemoryDb, Rs, Rd, Rt, shift, imm, Op, funct, addr, alu_src, jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg);
 
