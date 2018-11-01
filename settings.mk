@@ -3,7 +3,7 @@
 ## Assembly settings
 
 # Assembly program (minus .asm extension)
-PROGRAM := multiplyby3
+PROGRAM := JumpingFoxes/multiplyby3
 
 # Memory image(s) to create from the assembly program
 TEXTMEMDUMP := $(PROGRAM).text.hex

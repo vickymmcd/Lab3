@@ -1,71 +1,81 @@
-
-
-
 `include "cpu.v"
-`timescale 1ns/1ps
-// Shift Register test bench
-module cpuTest();
 
-	reg clk;
+//------------------------------------------------------------------------
+// Simple fake CPU testbench sequence
+//------------------------------------------------------------------------
 
-	CPU cpu(
-		.clk(clk)
-	);
+module cpu_test ();
 
-	task testInst;
-		// input[5:0] exp_Op, Op;
+    reg clk;
+    reg reset;
 
-		// if (Op == exp_Op) begin
-		// 	$display("Correct OP code");
-		// end
-		// else begin
-		// 	$display("Incorrect OP code:");
-		// 	$display(Op);
-		$display("Program counter: %h", cpu.PCaddr);
+    // Clock generation
+    initial clk=0;
+    always #10 clk = !clk;
 
-		// end
+    // Instantiate fake CPU
+    CPU cpu(.clk(clk), .reset(reset));
 
-	endtask
-	
+    // Filenames for memory images and VCD dump file
+    reg [1023:0] mem_text_fn;
+    reg [1023:0] mem_data_fn;
+    reg [1023:0] dump_fn;
+    reg init_data = 1;      // Initializing .data segment is optional
 
-	initial begin
+    // Test sequence
+    initial begin
 
-		clk = 1; #12000; clk = 0; #12000;
+	// Get command line arguments for memory image(s) and VCD dump file
+	//   http://iverilog.wikia.com/wiki/Simulation
+	//   http://www.project-veripage.com/plusarg.php
+	if (! $value$plusargs("mem_text_fn=%s", mem_text_fn)) begin
+	    $display("ERROR: provide +mem_text_fn=[path to .text memory image] argument");
+	    $finish();
+        end
+	if (! $value$plusargs("mem_data_fn=%s", mem_data_fn)) begin
+	    $display("INFO: +mem_data_fn=[path to .data memory image] argument not provided; data memory segment uninitialized");
+	    init_data = 0;
+        end
 
-	    $readmemh("InstructionExample", cpu.Dmem);
-
-	    //$readmemh("text", CPU.IF.program_mem.mem);
-
-		$display("Program counter: %h", cpu.PCaddr);
-		$display("Program counter Updated: %h", cpu.PCupdated);
-		$display("Jump Control: %h", cpu.jump);
-		$display("Branch Control: %h", cpu.branchatall);
+	if (! $value$plusargs("dump_fn=%s", dump_fn)) begin
+	    $display("ERROR: provide +dump_fn=[path for VCD dump] argument");
+	    $finish();
+        end
 
 
+        // Load CPU memory from (assembly) dump files
+        // Assumes compact memory map, _word_ addressed memory implementation
+        //   -> .text segment starts at word address 0
+        //   -> .data segment starts at word address 2048 (byte address 0x2000)
+	$readmemh(mem_text_fn, cpu.memory, 0);
+        if (init_data) begin
+	    $readmemh(mem_data_fn, cpu.memory, 2048);
+        end
 
+	// Dump waveforms to file
+	// Note: arrays (e.g. memory) are not dumped by default
+	$dumpfile(dump_fn);
+	$dumpvars();
 
-	 //    // Testing Jump and Link Values
-	 //    Instructions = 32'b00001100000000000000000000000111; #10
-	 //    testValuesA(6'b000011, Op);
-	 //    testValuesB(5'b00000, Rs, 5'b00000, Rt, 5'b00000, Rd,
-	 //    			16'b000000000000111, imm);
-	 //    testValuesC(26'b00000000000000000000000111, addr,
-	 //    			3'b000, alu_src,
-	 //    			1'b1, jump,
-	 //    			1'b1, jumpLink);
-	 //    testValuesD(
-	 //    			1'b0, branchatall,
-	 //    			1'b0, bne,
-	 //    			1'b0, mem_write,
-	 //    			1'b1, alu_control);
-	 //    testValuesE(
-	 //    			1'b1, reg_write,
-	 //    			1'b1, regDst,
-	 //    			1'b1, memToReg,
-	 //    			1'b0, jumpReg);
-		// $display("END TEST 1 ---------------------------------------------");
+	// Assert reset pulse
+	reset = 0; #10;
+	reset = 1; #10;
+	reset = 0; #10;
 
-	end
+	// Display a few cycles just for quick checking
+	// Note: I'm just dumping instruction bits, but you can do some
+	// self-checking test cases based on your CPU and program and
+	// automatically report the results.
+	$display("Time | PC       | Instruction");
+	repeat(3) begin
+        $display("%4t | %h | %h", $time, cpu.PC_A, cpu.INS_A); #20 ;
+        end
+	$display("... more execution (see waveform)");
+
+	// End execution after some time delay - adjust to match your program
+	// or use a smarter approach like looking for an exit syscall or the
+	// PC to be the value of the last instruction in your program.
+	#2000 $finish();
+    end
 
 endmodule
-
