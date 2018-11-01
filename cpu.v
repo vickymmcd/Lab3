@@ -42,7 +42,8 @@ module CPU
   wire[5:0] Op, funct;
   wire[25:0] addr;
   wire[2:0] alu_src;
-  wire jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg;     
+  wire jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg;  
+
 
 
   // data A and B
@@ -52,14 +53,13 @@ module CPU
 
 
   ///////////////// figure out what should we do for declaring input type
-  instructionwrapper instrwrpr(Instructions, 1, Rs, Rd, Rt, immediate, Op, addr, alu_src, jump, jumpLink, branchE, branchNE, mem_write,alu_control,reg_write, regDst, memToReg);
-
+  instructionwrapper instrwrpr(Instructions, Rs, Rd, Rt, shift, imm, Op, funct, addr, alu_src, jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg);
   ///////////////// PC input? will be updated /////////////
-  alu alu1(PCplusfour, carryoutPC, zeroPC, overflowPC, PCupdated, 32'd4, 3'b000);
+  ALU alu1(PCplusfour, carryoutPC, zeroPC, overflowPC, PCupdated, 32'd4, 3'b000);
 
-  signextend signextended(immediate, clk, extendedimm, shiftedimm);
+  signextend signextended(imm, clk, extendedimm, shiftedimm);
   // 
-  alu alu2(PCfourimm, carryoutIm, zeroIm, overflowIm, PCplusfour, shiftedimm, 3'b000);
+  ALU alu2(PCfourimm, carryoutIm, zeroIm, overflowIm, PCplusfour, shiftedimm, 3'b000);
   // need to figure out how to use a mux to decide between different PC values
 
   mux32bitsel mux1(writebackreg, jumpLink, PCplusfour, writebackDout);
@@ -67,13 +67,13 @@ module CPU
   regfile registerfile(Da, Db, writebackreg, Rs, Rd, Rt, reg_write, clk);
   mux32bitsel mux2(selB, alu_control, Db, extendedimm);
 
-  alu alu3(DataOut, carryoutReg, zeroReg, overflowReg, Da, selB, alu_src);
+  ALU alu3(DataOut, carryoutReg, zeroReg, overflowReg, Da, selB, alu_src);
 
   datamemory Dmem(clk, writebackDout, DataOutMem, mem_write, Db);
 
   mux32bitsel mux3(writebackDout, memToReg, DataOut, DataOutMem);
 
-  AND mux3selAND(mux3sel,branchE,branchNE);
+  `AND mux3selAND(mux3sel,branchE,branchNE);
 
   mux32bitsel mux4(jumpaddr, mux3sel, PCplusfour, PCfourimm);
   mux32bitsel mux5(jumpaddrPC, regDst, jumpaddr, Da);

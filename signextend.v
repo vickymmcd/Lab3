@@ -1,5 +1,5 @@
 module signextend
-#(parameter width = 16)
+#(parameter width = 15)
 (
   input [width:0] unextended,
   input clk,
