@@ -10,12 +10,7 @@
 
 module CPU
 (
-  // input[16:0] immediate,
-  input clk,
-  input[31:0] PC,
-  input[31:0] Instructions,
-  output[31:0] writebackDout
-  // insert inputs and outputs right here
+  input clk, // Since the instructions are storded in data memeroy, we only need the clock
 );
 
   // wires for PC
@@ -45,16 +40,19 @@ module CPU
 
 
   // data A and B
-  wire[31:0] Da, Db;
+  wire[31:0] Da, Db, MemoryDb;
   wire[31:0] selB;
   wire[31:0] DataOut, DataOutMem;
+
+  assign mem_write = 0;
 
   // signextend for jump addr
   wire[31:0] extendedaddr, shiftedaddr;
 
-  ///////////////// figure out what should we do for declaring input type
-  instructionwrapper instrwrpr(Instructions, Rs, Rd, Rt, shift, imm, Op, funct, addr, alu_src, jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg);
-  ///////////////// PC input? will be updated /////////////
+  DFF pc(.out(PCupdated),.clk(clk),.in(PCaddr),.enable(1))
+
+  instructionwrapper instrwrpr(MemoryDb, Rs, Rd, Rt, shift, imm, Op, funct, addr, alu_src, jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg);
+
   ALU alu1(PCplusfour, carryoutPC, zeroPC, overflowPC, PCupdated, 32'd4, 3'b000);
 
   signextend signextended(imm, extendedimm, shiftedimm);
@@ -65,11 +63,11 @@ module CPU
   mux32bitsel mux1(writebackreg, jumpLink, PCplusfour, writebackDout);
 
   regfile registerfile(Da, Db, writebackreg, Rs, Rd, Rt, reg_write, clk);
-  mux32bitsel mux2(selB, alu_control, Db, extendedimm);
+  mux32bitsel mux2(selB, alu_control, MemoryDb, extendedimm);
 
   ALU alu3(DataOut, carryoutReg, zeroReg, overflowReg, Da, selB, alu_src);
 
-  datamemory Dmem(clk, writebackDout, DataOutMem, mem_write, Db);
+  datamemory Dmem(clk, writebackDout, PCupdated, mem_write, MemoryDb); // I AM CHANGING THE ADDRESED TO BE the PC
 
   mux32bitsel mux3(writebackDout, memToReg, DataOut, DataOutMem);
 
