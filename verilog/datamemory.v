@@ -17,16 +17,20 @@ module datamemory
     output reg [width-1:0]      dataOut,
     input [addresswidth-1:0]    address,
     input                       writeEnable,
-    input [width-1:0]           dataIn
+    input [width-1:0]           dataIn,
+    input [width-1:0]           instructionAddr,
+    input [width-1:0]           instructionOut
 );
 
-    // reg [31:0] mem[4095:0];  
-    reg [width-1:0] memory [depth-1:0];
+    reg [31:0] memory[1023:0];  // is this supose to be bigger? 4095
+    //reg [width-1:0] memory [depth-1:0]; // Old data memory set up
 
     always @(posedge clk) begin
         if(writeEnable)
             memory[address] <= dataIn;
-        dataOut <= memory[address];
     end
+    // assign dataOut = memory[address]; OLD
+    assign dataOut = memory[address];
+    assign instructionOut = memory[instructionAddr];
 
 endmodule
