@@ -20,7 +20,7 @@ module datamemory
     input [width-1:0]           dataIn
 );
 
-
+    // reg [31:0] mem[4095:0];  
     reg [width-1:0] memory [depth-1:0];
 
     always @(posedge clk) begin
