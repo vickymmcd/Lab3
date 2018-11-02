@@ -6,7 +6,7 @@
 `include "shiftregister.v"
 `include "datamemory.v"
 `include "DFF.v"
-`include "ALUextra.v"
+`include "signextendjump.v"
 // `include "mux32bitsel.v"
 `include "branch.v"
 `timescale 1ns/1ps
@@ -76,12 +76,13 @@ module CPU
   // `AND mux3selAND(mux3sel,branchatall,bne);
 
   branch branchinstr(zeroIm, branchatall, bne, mux3sel);
-  mux32bitsel mux4(jumpaddr, mux3sel, PCplusfour, PCfourimm);
+
+  mux32bitsel mux4(jumpaddr, mux3sel, PCplusfour, PCfourimm); //???
   mux32bitsel mux5(jumpaddrPC, jumpReg, jumpaddr, Da);
 
-
   // sign extend to addr
-  signextend #(25) signextendjump(addr, extendedaddr, shiftedaddr);
+  signextendjump signextendjump3(addr, extendedaddr);
 
+  mux32bitsel mux6(PCaddr, jump,  jumpaddrPC, extendedaddr); // when 1, take jumpaddPC
 
 endmodule

@@ -72,8 +72,8 @@ module cpu_test ();
 
 
 	$display("Time | PC       | Instruction");
-	repeat(3) begin
-        $display("%4t | %b | %b", $time, cpu.imm, cpu.alu1.result); #20 ;
+	repeat(5) begin
+        $display("%4t | %b | %b", $time, cpu.PCupdated, cpu.mux3sel); #20 ;
         end
 	$display("... more execution (see waveform)");
 

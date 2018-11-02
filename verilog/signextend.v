@@ -6,7 +6,6 @@ module signextend
   output reg [31:0] extended, shifted
 );
 
-
   initial begin 
     extended <= $signed(unextended);
     shifted <= extended<<2;
