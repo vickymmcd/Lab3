@@ -1,12 +1,12 @@
 
 `include "bitslice.v"
 
-`define XOR xor #60
-`define AND1 and #20
-`define AND3 and #40
-`define NOT not #10
-`define NOR32 nor #320
-`define OR or #30
+`define XOR xor //#60
+`define AND1 and //#20
+`define AND3 and //#40
+`define NOT not //#10
+`define NOR32 nor //#320
+`define OR or //#30
 
 `timescale 1ns/1ps
 // *************defined gates from bitslice.v**************

@@ -6,6 +6,7 @@
 `include "shiftregister.v"
 `include "datamemory.v"
 `include "DFF.v"
+`include "ALUextra.v"
 // `include "mux32bitsel.v"
 `include "branch.v"
 `timescale 1ns/1ps
@@ -41,8 +42,6 @@ module CPU
   wire[2:0] alu_src;
   wire jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg, reset;  
 
-
-
   // data A and B
   wire[31:0] Da, Db, MemoryDb;
   wire[31:0] selB;
@@ -56,7 +55,7 @@ module CPU
 
   instructionwrapper instrwrpr(MemoryDb, Rs, Rd, Rt, shift, imm, Op, funct, addr, alu_src, jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg);
 
-  ALU alu1(PCplusfour, carryoutPC, zeroPC, overflowPC, PCupdated, 32'd4, 3'b000);
+  ALU alu1(.result(PCplusfour), .carryout(carryoutPC), .zero(zeroPC), .overflow(overflowPC), .operandA(PCupdated), .operandB(32'd4), .command(3'b000));
 
   signextend signextended(imm, extendedimm, shiftedimm);
   // 
@@ -83,8 +82,6 @@ module CPU
 
   // sign extend to addr
   signextend #(25) signextendjump(addr, extendedaddr, shiftedaddr);
-  mux32bitsel mux6(PCaddr, jump, jumpaddrPC, extendedaddr);
-
 
 
 endmodule

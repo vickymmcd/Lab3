@@ -1,5 +1,5 @@
 `include "cpu.v"
-
+`timescale 1ns/1ps
 //------------------------------------------------------------------------
 // Simple fake CPU testbench sequence
 //------------------------------------------------------------------------
@@ -68,12 +68,12 @@ module cpu_test ();
 	// Assert reset pulse
 	reset = 0; #10;
 	reset = 1; #10;
-	// reset = 0; #10;
+	reset = 0; #10;
 
 
 	$display("Time | PC       | Instruction");
 	repeat(3) begin
-        $display("%4t | %b | %b", $time, cpu.alu_control, cpu.alu_src); #20 ;
+        $display("%4t | %b | %b", $time, cpu.imm, cpu.alu1.result); #20 ;
         end
 	$display("... more execution (see waveform)");
 
