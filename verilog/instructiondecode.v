@@ -103,7 +103,7 @@ always @(Op) begin
             jumpLink =0;
             bne = 0;
             alu_src = `alu_sub;
-            alu_control = 0;
+            alu_control = 1;
             reg_write = 0;
             mem_write = 0;
             memToReg = 0;

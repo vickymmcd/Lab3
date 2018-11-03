@@ -4,10 +4,10 @@ start:
 	addi $v0, $zero 1
 
 test:
-	add $v0, $a0, $zero
+	addi $v0, $zero, 876
 
 second:
-	add $v0, $a0, $zero
+	addi $v0, $zero, 28238
 	j end
 
 end:

@@ -10,6 +10,7 @@
 `include "signextendjump.v"
 `include "regfileExtra.v"
 `include "signextendjump16.v"
+`include "shift.v"
 // `include "mux32bitsel.v"
 `include "branch.v"
 `timescale 1ns/1ps
@@ -60,7 +61,7 @@ module CPU
 
   ALU alu1(.result(PCplusfour), .carryout(carryoutPC), .zero(zeroPC), .overflow(overflowPC), .operandA(PCupdated), .operandB(32'd4), .command(3'b000));
 
-  signextend signextended(imm, shiftedimm);
+  shift signextended(extendedimm, shiftedimm);
 
   signextendjump16 signextendjump2(imm,extendedimm);
   // 
@@ -85,7 +86,7 @@ module CPU
 
   // `AND mux3selAND(mux3sel,branchatall,bne);
 
-  branch branchinstr(zeroIm, branchatall, bne, mux3sel);
+  branch branchinstr(zeroReg, branchatall, bne, mux3sel);
 
   mux32bitsel mux4(jumpaddr, mux3sel, PCplusfour, PCfourimm); //???
   mux32bitsel mux5(jumpaddrPC, jumpReg, jumpaddr, Da);

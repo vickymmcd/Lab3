@@ -47,7 +47,7 @@ module cpu_test ();
 
         // Load CPU memory from (assembly) dump files
         // Assumes compact memory map, _word_ addressed memory implementation
-        //   -> .text segment starts at word address 0
+        //   -> .text segment starts at word address 0 
           //-> .data segment starts at word address 2048 (byte address 0x2000)
 		// $readmemh("InstructionExample.dat", cpu.Dmem.memory, 0);
   //       if (init_data) begin
@@ -73,7 +73,7 @@ module cpu_test ();
 
 	$display("PC | IMM  | ALUOutput | MemoryOutput | Da  | Db  | reg input | branch ");
 	repeat(25) begin
-        $display("%4t | %b | %d | %d | %d | %d | %d | %d | %b", $time, cpu.PCupdated, cpu.imm, cpu.DataOut, cpu.DataOutMem, cpu.Da, cpu.Db, cpu.writebackreg, cpu.branchatall); #20 ;
+        $display("%4t | %b | %d | %d | %d | %d | %d | %d | %d", $time, cpu.PCupdated, cpu.imm, cpu.DataOut, cpu.DataOutMem, cpu.Da, cpu.Db, cpu.jumpaddr, cpu.PCupdated); #20 ;
         end
 	$display("... more execution (see waveform)");
 
