@@ -6,12 +6,9 @@
 `include "shiftregister.v"
 `include "datamemory.v"
 `include "DFF.v"
-`include "aluExtra.v"
 `include "signextendjump.v"
-`include "regfileExtra.v"
 `include "signextendjump16.v"
 `include "shift.v"
-// `include "mux32bitsel.v"
 `include "branch.v"
 `timescale 1ns/1ps
 

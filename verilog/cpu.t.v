@@ -71,9 +71,9 @@ module cpu_test ();
 	reset = 0; #10;
 
 
-	$display("PC | IMM  | ALUOutput | MemoryOutput | Da  | Db  | reg input | branch ");
+	$display("PC | IMM  | ALUOutput | MemoryOutput | MEMORY input | Da  | Db  | reg input | branch ");
 	repeat(25) begin
-        $display("%4t | %b | %d | %d | %d | %d | %d | %d | %d", $time, cpu.PCupdated, cpu.imm, cpu.DataOut, cpu.DataOutMem, cpu.Da, cpu.Db, cpu.jumpaddr, cpu.mux3sel); #20 ;
+        $display("%4t | %b | %b | %b | %d | %d | %d | %d | %d | %b", $time, cpu.PCaddr, cpu.MemoryDb, cpu.addr, cpu.DataOutMem, cpu.Db, cpu.Da, cpu.extendedaddr, cpu.jumpaddrPC, cpu.Dmem.instructionAddr); #20 ;
         end
 	$display("... more execution (see waveform)");
 
