@@ -71,9 +71,9 @@ module cpu_test ();
 	reset = 0; #10;
 
 
-	$display("Time | PC       | Instruction");
+	$display("PC | IMM  | ALUOutput | MemoryOutput | Da  | Db  | reg input");
 	repeat(25) begin
-        $display("%4t | %b | %b | %b | %d | %d | %d | %d", $time, cpu.PCupdated, cpu.MemoryDb, cpu.PCaddr, cpu.Rs, cpu.Rd, cpu.DataOut, cpu.writebackreg); #20 ;
+        $display("%4t | %b | %d | %d | %d | %d | %d | %d", $time, cpu.PCupdated, cpu.imm, cpu.DataOut, cpu.DataOutMem, cpu.Da, cpu.Db, cpu.writebackreg); #20 ;
         end
 	$display("... more execution (see waveform)");
 
@@ -87,7 +87,7 @@ module cpu_test ();
 	// End execution after some time delay - adjust to match your program
 	// or use a smarter approach like looking sfor an exit syscall or the
 	// PC to be the value of the last instruction in your program.
-	$display("%4t | %b | %b", $time, cpu.MemoryDb, cpu.mux3sel, "jee");
+	$display("%4t | %b | %d", $time, cpu.MemoryDb, cpu.DataOut, "jee");
 	$finish();
     end
 
