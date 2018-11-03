@@ -72,8 +72,8 @@ module cpu_test ();
 
 
 	$display("PC | IMM  | ALUOutput | MemoryOutput | MEMORY input | Da  | Db  | reg input | branch ");
-	repeat(25) begin
-        $display("%4t | %b | %b | %b | %d | %d | %d | %d | %d | %b", $time, cpu.PCaddr, cpu.MemoryDb, cpu.addr, cpu.DataOutMem, cpu.Db, cpu.Da, cpu.extendedaddr, cpu.jumpaddrPC, cpu.Dmem.instructionAddr); #20 ;
+	repeat(10) begin
+        $display("%4t | %b | %b | %b | %d | %d | %d | %d | %d | %d", $time, cpu.PCaddr, cpu.MemoryDb, cpu.addr, cpu.DataOutMem, cpu.Db, cpu.Da, cpu.extendedaddr, cpu.jumpaddrPC, cpu.imm); #20 ;
         end
 	$display("... more execution (see waveform)");
 

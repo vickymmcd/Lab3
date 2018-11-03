@@ -19,7 +19,7 @@ module CPU
 );
 
   // wires for PC
-  wire[31:0] PCaddr;
+  wire[31:0] PCaddr, shiftedjumpaddr;
   wire[31:0] PCupdated, PCplusfour, writebackDout;
   wire carryoutPC, zeroPC, overflowPC;
   // wires for Jump, JAL, JR
@@ -91,6 +91,8 @@ module CPU
   // sign extend to addr
   signextendjump signextendjump3(addr, extendedaddr);
 
-  mux32bitsel mux6(PCaddr, jump,  jumpaddrPC, extendedaddr); // when 1, take jumpaddPC
+  shift signextendedJump(extendedaddr, shiftedjumpaddr);
+
+  mux32bitsel mux6(PCaddr, jump,  jumpaddrPC, shiftedjumpaddr); // when 1, take jumpaddPC
 
 endmodule
