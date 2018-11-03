@@ -1,3 +1,9 @@
+`include "decoder1to32.v"
+`include "mux32to1by32.v"
+`include "register32.v"
+`include "register32zero.v"
+
+
 //------------------------------------------------------------------------------
 // MIPS register file
 //   width: 32 bits
@@ -5,13 +11,6 @@
 //   2 asynchronous read ports
 //   1 synchronous, positive edge triggered write port
 //------------------------------------------------------------------------------
-
-`include "register32.v"
-`include "register32zero.v"
-`include "mux32to1by1.v"
-`include "mux32to1by32.v"
-`include "decoder1to32.v"
-
 
 module regfile
 (
@@ -25,84 +24,50 @@ input		RegWrite,	// Enable writing of register when High
 input		Clk		// Clock (Positive Edge Triggered)
 );
 
-	wire[31:0] register0Out, register1Out,register2Out,register3Out,register4Out,register5Out,register6Out,register7Out,register8Out,register9Out,register10Out, register11Out,register12Out,register13Out,register14Out,register15Out,register16Out,register17Out,register18Out,register19Out, register20Out, register21Out,register22Out,register23Out,register24Out,register25Out,register26Out,register27Out,register28Out,register29Out, register30Out, register31Out,register32Out;
-	wire[31:0] fromDecoder;
-	wire[31:0] toActiveMux;
-	wire[3:0] testMux;
+  // These two lines are clearly wrong.  They are included to showcase how the
+  // test harness works. Delete them after you understand the testing process,
+  // and replace them with your actual code.
+  wire[31:0] decoded;
+  wire[31:0] register0, register1, register2, register3, register4, register5, register6, register7, register8, register9, register10, register11, register12, register13, register14, register15, register16, register17, register18, register19, register20, register21, register22, register23, register24, register25, register26, register27, register28, register29, register30, register31;
+  decoder1to32 decoder(decoded, RegWrite, WriteRegister);
+
+  register32zero register0def(register0, WriteData, decoded[0], Clk);
+  register32 register1def(register1, WriteData, decoded[1], Clk);
+  register32 register2def(register2, WriteData, decoded[2], Clk);
+  register32 register3def(register3, WriteData, decoded[3], Clk);
+  register32 register4def(register4, WriteData, decoded[4], Clk);
+  register32 register5def(register5, WriteData, decoded[5], Clk);
+  register32 register6def(register6, WriteData, decoded[6], Clk);
+  register32 register7def(register7, WriteData, decoded[7], Clk);
+  register32 register8def(register8, WriteData, decoded[8], Clk);
+  register32 register9def(register9, WriteData, decoded[9], Clk);
+  //register32zero register10def(register10, WriteData, decoded[10], Clk);
+  register32 register10def(register10, WriteData, decoded[10], Clk);
+  register32 register11def(register11, WriteData, decoded[11], Clk);
+  register32 register12def(register12, WriteData, decoded[12], Clk);
+  register32 register13def(register13, WriteData, decoded[13], Clk);
+  register32 register14def(register14, WriteData, decoded[14], Clk);
+  register32 register15def(register15, WriteData, decoded[15], Clk);
+  register32 register16def(register16, WriteData, decoded[16], Clk);
+  register32 register17def(register17, WriteData, decoded[17], Clk);
+  register32 register18def(register18, WriteData, decoded[18], Clk);
+  register32 register19def(register19, WriteData, decoded[19], Clk);
+  register32 register20def(register20, WriteData, decoded[20], Clk);
+  register32 register21def(register21, WriteData, decoded[21], Clk);
+  register32 register22def(register22, WriteData, decoded[22], Clk);
+  register32 register23def(register23, WriteData, decoded[23], Clk);
+  register32 register24def(register24, WriteData, decoded[24], Clk);
+  register32 register25def(register25, WriteData, decoded[25], Clk);
+  register32 register26def(register26, WriteData, decoded[26], Clk);
+  register32 register27def(register27, WriteData, decoded[27], Clk);
+  register32 register28def(register28, WriteData, decoded[28], Clk);
+  register32 register29def(register29, WriteData, decoded[29], Clk);
+  register32 register30def(register30, WriteData, decoded[30], Clk);
+  register32 register31def(register31, WriteData, decoded[31], Clk);
 
 
-	decoder1to32 decoder1to32(.out(fromDecoder), .enable(RegWrite), .address(WriteRegister));
-	// output[31:0]  out,
-	// input         enable,
-	// input[4:0]    address
-
-
- 	register32zero register0(.q(register0Out), .d(WriteData), .wrenable(fromDecoder[0]), .clk(Clk));
-	// // (
-	// // output[31:0]	q,
-	// // input[31:0]		d,
-	// // input		wrenable,
-	// // input		clk
-	// // );
-
-	register32 register1(.q(register1Out), .d(WriteData), .wrenable(fromDecoder[1]), .clk(Clk));
- 	//output[31:0]	q,
-	// // input[31:0]		d,
-	// // input		wrenable,
-	// // input		clk
-
-
-	// // Reapeat 30 times
-
-	register32 register2(.q(register2Out), .d(WriteData), .wrenable(fromDecoder[2]), .clk(Clk));
-	register32 register3(.q(register3Out), .d(WriteData), .wrenable(fromDecoder[3]), .clk(Clk));
-	register32 register4(.q(register4Out), .d(WriteData), .wrenable(fromDecoder[4]), .clk(Clk));
-	register32 register5(.q(register5Out), .d(WriteData), .wrenable(fromDecoder[5]), .clk(Clk));
-	register32 register6(.q(register6Out), .d(WriteData), .wrenable(fromDecoder[6]), .clk(Clk));
-	register32 register7(.q(register7Out), .d(WriteData), .wrenable(fromDecoder[7]), .clk(Clk));
-	register32 register8(.q(register8Out), .d(WriteData), .wrenable(fromDecoder[8]), .clk(Clk));
-	register32 register9(.q(register9Out), .d(WriteData), .wrenable(fromDecoder[9]), .clk(Clk));
-	register32 register10(.q(register10Out), .d(WriteData), .wrenable(fromDecoder[10]), .clk(Clk));
-	register32 register11(.q(register11Out), .d(WriteData), .wrenable(fromDecoder[11]), .clk(Clk));
-	register32 register12(.q(register12Out), .d(WriteData), .wrenable(fromDecoder[12]), .clk(Clk));
-	register32 register13(.q(register13Out), .d(WriteData), .wrenable(fromDecoder[13]), .clk(Clk));
-	register32 register14(.q(register14Out), .d(WriteData), .wrenable(fromDecoder[14]), .clk(Clk));
-	register32 register15(.q(register15Out), .d(WriteData), .wrenable(fromDecoder[15]), .clk(Clk));
-	register32 register16(.q(register16Out), .d(WriteData), .wrenable(fromDecoder[16]), .clk(Clk));
-	register32 register17(.q(register17Out), .d(WriteData), .wrenable(fromDecoder[17]), .clk(Clk));
-	register32 register18(.q(register18Out), .d(WriteData), .wrenable(fromDecoder[18]), .clk(Clk));
-	register32 register19(.q(register19Out), .d(WriteData), .wrenable(fromDecoder[19]), .clk(Clk));
-	register32 register20(.q(register20Out), .d(WriteData), .wrenable(fromDecoder[20]), .clk(Clk));
-	register32 register21(.q(register21Out), .d(WriteData), .wrenable(fromDecoder[21]), .clk(Clk));
-	register32 register22(.q(register22Out), .d(WriteData), .wrenable(fromDecoder[22]), .clk(Clk));
-	register32 register23(.q(register23Out), .d(WriteData), .wrenable(fromDecoder[23]), .clk(Clk));
-	register32 register24(.q(register24Out), .d(WriteData), .wrenable(fromDecoder[24]), .clk(Clk));
-	register32 register25(.q(register25Out), .d(WriteData), .wrenable(fromDecoder[25]), .clk(Clk));
-	register32 register26(.q(register26Out), .d(WriteData), .wrenable(fromDecoder[26]), .clk(Clk));
-	register32 register27(.q(register27Out), .d(WriteData), .wrenable(fromDecoder[27]), .clk(Clk));
-	register32 register28(.q(register28Out), .d(WriteData), .wrenable(fromDecoder[28]), .clk(Clk));
-	register32 register29(.q(register29Out), .d(WriteData), .wrenable(fromDecoder[29]), .clk(Clk));
-	register32 register30(.q(register30Out), .d(WriteData), .wrenable(fromDecoder[30]), .clk(Clk));
-	register32 register31(.q(register31Out), .d(WriteData), .wrenable(fromDecoder[31]), .clk(Clk));
-
-
-	// mux32to1by1 mux32to1by1(.out(toActiveMux), .address(ReadRegister2), .inputs(toMux));
-	// // output      out,
-	// // input[4:0]  address,
-	// // input[31:0] inputs
-
-	assign testMux = {register0Out,register0Out, register0Out,register0Out};
-
-	mux32to1by32 mux32to1by32A(ReadData1, ReadRegister1, register0Out, register1Out,register2Out,register3Out,register4Out,register5Out,register6Out,register7Out,register8Out,register9Out,register10Out, register11Out,register12Out,register13Out,register14Out,register15Out,register16Out,register17Out,register18Out,register19Out, register20Out, register21Out,register22Out,register23Out,register24Out,register25Out,register26Out,register27Out,register28Out,register29Out, register30Out, register31Out);
-	// output[31:0]  out,
-	// input[4:0]    address,
-	// input[31:0]   input0, input1...input31
-
-	mux32to1by32 mux32to1by32B(ReadData2, ReadRegister2, register0Out, register1Out,register2Out,register3Out,register4Out,register5Out,register6Out,register7Out,register8Out,register9Out,register10Out, register11Out,register12Out,register13Out,register14Out,register15Out,register16Out,register17Out,register18Out,register19Out, register20Out, register21Out,register22Out,register23Out,register24Out,register25Out,register26Out,register27Out,register28Out,register29Out, register30Out, register31Out);
-	// output[31:0]  out,
-	// input[4:0]    address,
-	// input[31:0]   input0, input1...input31
-
+  mux32to1by32 mux1(ReadData1, ReadRegister1, register0, register1, register2, register3, register4, register5, register6, register7, register8, register9, register10, register11, register12, register13, register14, register15, register16, register17, register18, register19, register20, register21, register22, register23, register24, register25, register26, register27, register28, register29, register30, register31);
+  mux32to1by32 mux2(ReadData2, ReadRegister2, register0, register1, register2, register3, register4, register5, register6, register7, register8, register9, register10, register11, register12, register13, register14, register15, register16, register17, register18, register19, register20, register21, register22, register23, register24, register25, register26, register27, register28, register29, register30, register31);
 
 
 endmodule

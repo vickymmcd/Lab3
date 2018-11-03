@@ -16,4 +16,4 @@ DATAMEMDUMP := $(PROGRAM).data.hex
 TOPLEVEL := cpu
 
 # All circuits included by the toplevel $(TOPLEVEL).t.v
-CIRCUITS := $(TOPLEVEL).v
+CIRCUITS := $(TOPLEVEL).v #alu.v signextend.v addresslatch.v instructionwrapper.v regfile.v shiftregister.v regfileExtra.v signextendjump16.v branch.v

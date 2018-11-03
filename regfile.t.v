@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-// Test harness validates hw4testbench by connecting it to various functional
+// Test harness validates hw4testbench by connecting it to various functional 
 // or broken register files, and verifying that it correctly identifies each
 //------------------------------------------------------------------------------
 
@@ -7,18 +7,18 @@
 
 module hw4testbenchharness();
 
-  wire[31:0]  ReadData1;  // Data from first register read
-  wire[31:0]  ReadData2;  // Data from second register read
-  wire[31:0]  WriteData;  // Data to write to register
-  wire[4:0] ReadRegister1;  // Address of first register to read
-  wire[4:0] ReadRegister2;  // Address of second register to read
-  wire[4:0] WriteRegister;  // Address of register to write
-  wire    RegWrite; // Enable writing of register when High
-  wire    Clk;    // Clock (Positive Edge Triggered)
+  wire[31:0]	ReadData1;	// Data from first register read
+  wire[31:0]	ReadData2;	// Data from second register read
+  wire[31:0]	WriteData;	// Data to write to register
+  wire[4:0]	ReadRegister1;	// Address of first register to read
+  wire[4:0]	ReadRegister2;	// Address of second register to read
+  wire[4:0]	WriteRegister;  // Address of register to write
+  wire		RegWrite;	// Enable writing of register when High
+  wire		Clk;		// Clock (Positive Edge Triggered)
 
-  reg   begintest;  // Set High to begin testing register file
-  wire    endtest;      // Set High to signal test completion
-  wire    dutpassed;  // Indicates whether register file passed tests
+  reg		begintest;	// Set High to begin testing register file
+  wire  	endtest;    	// Set High to signal test completion 
+  wire		dutpassed;	// Indicates whether register file passed tests
 
   // Instantiate the register file being tested.  DUT = Device Under Test
   regfile DUT
@@ -37,15 +37,15 @@ module hw4testbenchharness();
   hw4testbench tester
   (
     .begintest(begintest),
-    .endtest(endtest),
+    .endtest(endtest), 
     .dutpassed(dutpassed),
     .ReadData1(ReadData1),
     .ReadData2(ReadData2),
-    .WriteData(WriteData),
-    .ReadRegister1(ReadRegister1),
+    .WriteData(WriteData), 
+    .ReadRegister1(ReadRegister1), 
     .ReadRegister2(ReadRegister2),
     .WriteRegister(WriteRegister),
-    .RegWrite(RegWrite),
+    .RegWrite(RegWrite), 
     .Clk(Clk)
   );
 
@@ -79,21 +79,20 @@ endmodule
 module hw4testbench
 (
 // Test bench driver signal connections
-input       begintest,  // Triggers start of testing
-output reg    endtest,  // Raise once test completes
-output reg    dutpassed,  // Signal test result
+input	   		begintest,	// Triggers start of testing
+output reg 		endtest,	// Raise once test completes
+output reg 		dutpassed,	// Signal test result
 
 // Register File DUT connections
-input[31:0]   ReadData1,
-input[31:0]   ReadData2,
-output reg[31:0]  WriteData,
-output reg[4:0]   ReadRegister1,
-output reg[4:0]   ReadRegister2,
-output reg[4:0]   WriteRegister,
-output reg    RegWrite,
-output reg    Clk
+input[31:0]		ReadData1,
+input[31:0]		ReadData2,
+output reg[31:0]	WriteData,
+output reg[4:0]		ReadRegister1,
+output reg[4:0]		ReadRegister2,
+output reg[4:0]		WriteRegister,
+output reg		RegWrite,
+output reg		Clk
 );
-
 
   // Initialize register driver signals
   initial begin
@@ -111,7 +110,7 @@ output reg    Clk
     dutpassed = 1;
     #10
 
-  // Test Case 1:
+  // Test Case 1: 
   //   Write '42' to register 2, verify with Read Ports 1 and 2
   //   (Passes because example register file is hardwired to return 42)
   WriteRegister = 5'd2;
@@ -119,15 +118,15 @@ output reg    Clk
   RegWrite = 1;
   ReadRegister1 = 5'd2;
   ReadRegister2 = 5'd2;
-  #5 Clk=1; #5 Clk=0; // Generate single clock pulse
+  #5 Clk=1; #5 Clk=0;	// Generate single clock pulse
 
   // Verify expectations and report test result
   if((ReadData1 !== 42) || (ReadData2 !== 42)) begin
-    dutpassed = 0;  // Set to 'false' on failure
+    dutpassed = 0;	// Set to 'false' on failure
     $display("Test Case 1 Failed");
   end
 
-  // Test Case 2:
+  // Test Case 2: 
   //   Write '15' to register 2, verify with Read Ports 1 and 2
   //   (Fails with example register file, but should pass with yours)
   WriteRegister = 5'd2;
@@ -142,92 +141,80 @@ output reg    Clk
     $display("Test Case 2 Failed");
   end
 
-  // Test Case 3:
-  //   Write '25' to register 2 with write enable off
-  //   verify that register is not written to and that enable is working
+
+
+
+  // Test Case 3: 
+  //   Write '30' to register 2, make sure it is only registered to one
   WriteRegister = 5'd2;
-  WriteData = 32'd25;
+  WriteData = 32'd15;
+  RegWrite = 1;
+  ReadRegister1 = 5'd3;
+  ReadRegister2 = 5'd3;
+  #5 Clk=1; #5 Clk=0;
+
+  if((ReadData1 !==  32'bx) || (ReadData2 !==  32'bx)) begin
+    dutpassed = 0;
+    $display("Test Case 3 Failed");
+    $display("%d , %d",ReadData1,  1'bX);
+  end
+
+
+
+
+
+  // Test Case 4: 
+  //   Write '0' to register 2,then sets to 42 and sets enable false
+  WriteRegister = 5'd2;
+  WriteData = 32'd0;
+  RegWrite = 1;
+  ReadRegister1 = 5'd2;
+  ReadRegister2 = 5'd2;
+  #5 Clk=1; #5 Clk=0; // Generate single clock pulse
+
+  WriteRegister = 5'd2;
+  WriteData = 32'd42;
   RegWrite = 0;
   ReadRegister1 = 5'd2;
   ReadRegister2 = 5'd2;
-  #5 Clk=1; #5 Clk=0;
+  #5 Clk=1; #5 Clk=0; // Generate single clock pulse
 
-  if((ReadData1 == WriteData) || (ReadData2 == WriteData)) begin
-    dutpassed = 0;
-    $display("Test Case 3 Failed");
-  end
 
-  // Test Case 4:
-  //   Test whether decoder is broken by checking if there
-  //   is a read register that was not a write register
-  //   but that has the write data
-  WriteRegister = 5'd2;
-  WriteData = 32'd22;
-  RegWrite = 1;
-  ReadRegister1 = 5'd5;
-  ReadRegister2 = 5'd2;
-  #5 Clk=1; #5 Clk=0;
-
-  // if one of the read registers isnt a write register, but both of the read datas have the write data then fail
-  if((ReadRegister1 != WriteRegister || ReadRegister2 != WriteRegister) && (ReadData1 == WriteData && ReadData2 ==WriteData)) begin
-    dutpassed = 0;
+  // Verify expectations and report test result
+  if((ReadData1 !== 0) || (ReadData2 !== 0)) begin
+    dutpassed = 0;  // Set to 'false' on failure
     $display("Test Case 4 Failed");
+    $display("%d, %d",ReadData1, ReadData2);
   end
 
-  // Test Case 5:
-  //   Check to make sure register 0 is not actually a register
-  //   instead of the constant value 0
+  // Test Case 5: 
+  //   Write '15' to register 0, make sure it registers as 0
   WriteRegister = 5'd0;
-  WriteData = 32'd22;
+  WriteData = 32'd15;
   RegWrite = 1;
   ReadRegister1 = 5'd0;
   ReadRegister2 = 5'd0;
   #5 Clk=1; #5 Clk=0;
 
-  // if one of the read registers isnt a write register, but both of the read datas have the write data then fail
-  if(ReadData1 != 0 || ReadData2 != 0) begin
+  if((ReadData1 !==  0) || (ReadData2 !==  0)) begin
     dutpassed = 0;
     $display("Test Case 5 Failed");
   end
 
-
-  // Test Case 6:
-  //   Check to make sure port 2 does not always read a specific
-  //   register
-  WriteRegister = 5'd7;
-  WriteData = 32'd6;
+  // Test Case 6: 
+  //   Write '15' to register 6, make sure it registers as 30
+  WriteRegister = 5'd6;
+  WriteData = 32'd15;
   RegWrite = 1;
-  ReadRegister1 = 5'd3;
-  ReadRegister2 = 5'd7;
+  ReadRegister1 = 5'd6;
+  ReadRegister2 = 5'd6;
   #5 Clk=1; #5 Clk=0;
 
-  // if one of the read registers isnt a write register, but both of the read datas have the write data then fail
-  if(ReadData1 == 6 || ReadData2 != 6) begin
+  if((ReadData1 !==  15) || (ReadData2 !==  15)) begin
     dutpassed = 0;
     $display("Test Case 6 Failed");
   end
 
-  // Test Case 7:
-  //   Check to make sure the two ports can read things
-  //   independently on 2 different registers at the same time
-  WriteRegister = 5'd10;
-  WriteData = 32'd27;
-  RegWrite = 1;
-  ReadRegister1 = 5'd10;
-  ReadRegister2 = 5'd15;
-  #5 Clk=1; #5 Clk=0;
-  WriteRegister = 5'd15;
-  WriteData = 32'd3;
-  RegWrite = 1;
-  ReadRegister1 = 5'd10;
-  ReadRegister2 = 5'd15;
-  #5 Clk=1; #5 Clk=0;
-
-  // if one of the read registers isnt a write register, but both of the read datas have the write data then fail
-  if(ReadData1 != 27 || ReadData2 != 3) begin
-    dutpassed = 0;
-    $display("Test Case 7 Failed");
-  end
 
 
   // All done!  Wait a moment and signal test completion.

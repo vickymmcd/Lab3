@@ -6,7 +6,10 @@
 `include "shiftregister.v"
 `include "datamemory.v"
 `include "DFF.v"
+`include "aluExtra.v"
 `include "signextendjump.v"
+`include "regfileExtra.v"
+`include "signextendjump16.v"
 // `include "mux32bitsel.v"
 `include "branch.v"
 `timescale 1ns/1ps
@@ -35,7 +38,7 @@ module CPU
   wire[31:0] writebackreg, addrwrite;
 
   // control signals
-  wire[4:0] Rs, Rd, Rt, shift;
+  wire[4:0] Rs, Rd, Rt, shift, regDstSel;
   wire[15:0] imm;
   wire[5:0] Op, funct;
   wire[25:0] addr;
@@ -57,21 +60,28 @@ module CPU
 
   ALU alu1(.result(PCplusfour), .carryout(carryoutPC), .zero(zeroPC), .overflow(overflowPC), .operandA(PCupdated), .operandB(32'd4), .command(3'b000));
 
-  signextend signextended(imm, extendedimm, shiftedimm);
+  signextend signextended(imm, shiftedimm);
+
+  signextendjump16 signextendjump2(imm,extendedimm);
   // 
   ALU alu2(PCfourimm, carryoutIm, zeroIm, overflowIm, PCplusfour, shiftedimm, 3'b000);
   // need to figure out how to use a mux to decide between different PC values
 
-  mux32bitsel mux1(writebackreg, jumpLink, PCplusfour, writebackDout);
+  mux32bitsel mux1(writebackreg, jumpLink,  writebackDout, PCplusfour);
 
-  regfile registerfile(Da, Db, writebackreg, Rs, Rd, Rt, reg_write, clk);
-  mux32bitsel mux2(selB, alu_control, MemoryDb, extendedimm);
+  mux32bitsel mux7(regDstSel, regDst, Rt, Rd); // When 0 use rt, when 1 use rd
+
+
+  regfile registerfile(Da, Db, writebackreg, Rs, Rt, regDstSel, reg_write, clk);
+
+
+  mux32bitsel mux2(selB, alu_control, extendedimm, Db); // When 0 selects extendedimm, when 1 selects db
 
   ALU alu3(DataOut, carryoutReg, zeroReg, overflowReg, Da, selB, alu_src);
 
-  datamemory Dmem(.clk(clk), .dataOut(DataOutMem), .address(PCupdated), .writeEnable(mem_write), .dataIn(Db), .instructionAddr(PCupdated), .instructionOut(MemoryDb)); // I AM CHANGING THE ADDRESED TO BE the PC
+  datamemory Dmem(.clk(clk), .dataOut(DataOutMem), .address(DataOut), .writeEnable(mem_write), .dataIn(Db), .instructionAddr(PCupdated), .instructionOut(MemoryDb)); // I AM CHANGING THE ADDRESED TO BE the PC
 
-  mux32bitsel mux3(writebackDout, memToReg, DataOut, DataOutMem);
+  mux32bitsel mux3(writebackDout, memToReg,DataOut,  DataOutMem);
 
   // `AND mux3selAND(mux3sel,branchatall,bne);
 

@@ -1,22 +1,15 @@
-// 32-bit D Flip-Flop with enable outputs zero
-
+// deliverable 3
+// Single-bit D Flip-Flop with enable
+//   Positive edge triggered
 module register32zero
-#(parameter VAL=0, WID=32)
+#(parameter WIDTH=32)
 (
-output reg[WID-1:0]	q,
-input[WID-1:0]		d,
+output [WIDTH-1:0]	q,
+input[WIDTH-1:0]		d,
 input		wrenable,
 input		clk
 );
-	genvar i;
-	generate
-		for(i=0; i<WID; i=i+1)
-		begin:genblock
-			always @(posedge clk) begin
-			    if(wrenable) begin
-			        q[i] <= VAL;
-			    end
-			end
-		end
-	endgenerate
+
+  assign q = 32'h0;
+
 endmodule

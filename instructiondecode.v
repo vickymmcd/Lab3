@@ -9,7 +9,6 @@
 `define BNE  6'b000101 // Type: I
 `define XORI  6'b001110 // Type: I
 `define ADDI 6'b001000 // Type: I
-`define ADDIU 6'b001001   
 
 `define XOR  6'b100110
 
@@ -51,11 +50,11 @@ always @(Op) begin
             jumpLink =0;
             bne = 0;
             alu_src = `alu_add;
-            alu_control = 0; // use imm
-            reg_write = 1; // write to reg
+            alu_control = 1;
+            reg_write = 0;
             mem_write = 0;
-            memToReg = 1;  // use data output
-            regDst = 0; // put in rt     
+            memToReg = 1;
+            regDst = 1;     
         end
         `SW: begin
             jump = 0;
@@ -64,8 +63,8 @@ always @(Op) begin
             jumpLink =0;
             bne = 0;
             alu_src = `alu_add;
-            alu_control = 0;
-            reg_write = 0;
+            alu_control = 1;
+            reg_write = 1;
             mem_write = 1;
             memToReg = 0;
             regDst = 0;  // x,dosent matter
@@ -76,12 +75,12 @@ always @(Op) begin
             branchatall = 0;
             jumpLink =0;
             bne = 0;
-            alu_src = `alu_add; // dosent matter
-            alu_control = 0;
+            alu_src = 000; // dosent matter
+            alu_control = 1;
             reg_write = 0;
             mem_write = 0;
-            memToReg = 0;
-            regDst = 0; // dosent matter 
+            memToReg = 1;
+            regDst = 1; 
         end
         `JAL: begin
             jump = 1;
@@ -101,13 +100,13 @@ always @(Op) begin
             jump = 0;
             branchatall = 1;
             jumpLink =0;
-            bne = 0;
+            bne = 1;
             alu_src = `alu_sub;
-            alu_control = 0;
-            reg_write = 0;
+            alu_control = 1;
+            reg_write = 1;
             mem_write = 0;
-            memToReg = 0;
-            regDst = 0; // selecting RD instead
+            memToReg = 1;
+            regDst = 1; 
         end
         `BNE: begin
             jumpReg = 0;
@@ -116,11 +115,11 @@ always @(Op) begin
             jumpLink =0;
             bne = 1;
             alu_src = `alu_sub;
-            alu_control = 0;
-            reg_write = 0;
+            alu_control = 1;
+            reg_write = 1;
             mem_write = 0;
-            memToReg = 0;
-            regDst = 0; 
+            memToReg = 1;
+            regDst = 1; 
         end
         `XORI: begin
             jump = 0;
@@ -148,23 +147,10 @@ always @(Op) begin
             regDst = 0; 
             jumpReg = 0;
         end
-        `ADDIU: begin
-            jump = 0;
-            branchatall = 0;
-            jumpLink =0;
-            bne = 0;
-            alu_src = `alu_add;
-            alu_control = 0;
-            reg_write = 1;
-            mem_write = 0;
-            memToReg = 0;
-            regDst = 0; 
-            jumpReg = 0;
-        end
         `RTypeFlag: begin
             case(funct)
                 `JR_f: begin
-                    jump = 0;
+                    jump = 1;
                     jumpReg = 1;
                     branchatall = 0;
                     jumpLink =0;

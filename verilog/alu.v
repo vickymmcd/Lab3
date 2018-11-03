@@ -30,7 +30,7 @@
 
 module ALU
 (
-output[31:0]  result,     // result
+output [31:0]  result,     // result
 output        carryout,   // carryout bitstream
 output        zero,       // returns 1 if the answer is all zeros, 0 other cases
 output        overflow,   // overflow bitstream
@@ -58,6 +58,11 @@ input[2:0]    command     // 3 bits control signal
       structuralBitSlice bitslice1(result[i], carryoutArray[i], command, operandA[i], operandB[i], carryoutArray[i-1]);
     end
   endgenerate
+
+  // always @(result) begin
+  //   if(result == 32'dx)
+  //     result <= 32'd0; 
+  // end
 
   `XOR xorGate(overflow, carryoutArray[30], carryoutArray[31]);
   `AND1 andGate2(carryout, carryoutArray[31]);

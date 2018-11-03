@@ -1,9 +1,9 @@
-`define AND and //#30
-`define OR or //#30
-`define NOT not //#10
-`define XOR xor //#60
-`define AND3 and// #40
-`define OR4 or //#50
+`define AND and #30
+`define OR or #30
+`define NOT not #10
+`define XOR xor #60
+`define AND3 and #40
+`define OR4 or #50
 
 `define ADD_ALU  3'd0
 `define SUB_ALU  3'd1
@@ -104,15 +104,7 @@ module structuralBitSlice
 // value for xor
  `XOR xorGate5(AxorB, a, b);
 
- // always @(a) begin
- //  if(a == 1'bx)
- //    a <= 0;
- // end
 
- // always @(b) begin
- //  if(b == 1'bx)
- //    b <= 0;
- // end
 
  structuralMultiplexer mymux(sum, address0, address1, sumval, noror, nandand, AxorB);
 

@@ -43,7 +43,7 @@ module cpu_test ();
         end
 
     $display(mem_text_fn);
-
+    //$dumpvars();
 
         // Load CPU memory from (assembly) dump files
         // Assumes compact memory map, _word_ addressed memory implementation
@@ -56,13 +56,13 @@ module cpu_test ();
 
 	// Dump waveforms to file
 	// Note: arrays (e.g. memory) are not dumped by default
-	$dumpfile("CPUtest.vcd");
+	$dumpfile("CPUtestN.vcd");
 
 
 	$readmemh(mem_text_fn, cpu.Dmem.memory, 0);
-    if (init_data) begin
-    $readmemh(mem_data_fn, cpu.Dmem.memory, 2048);
-    end
+    	if (init_data) begin
+    	$readmemh(mem_data_fn, cpu.Dmem.memory, 2048);
+    	end
 	$dumpvars();
 
 	// Assert reset pulse
@@ -72,15 +72,23 @@ module cpu_test ();
 
 
 	$display("Time | PC       | Instruction");
-	repeat(5) begin
-        $display("%4t | %b | %b", $time, cpu.PCupdated, cpu.mux3sel); #20 ;
+	repeat(25) begin
+        $display("%4t | %b | %b | %b | %d | %d | %d | %d", $time, cpu.PCupdated, cpu.MemoryDb, cpu.PCaddr, cpu.Rs, cpu.Rd, cpu.DataOut, cpu.writebackreg); #20 ;
         end
 	$display("... more execution (see waveform)");
 
+	#2000;
+	if (cpu.registerfile.ReadData2 === 32'd48)
+		$display("Fibonnaci test passed!");
+	else
+		$display("%b",cpu.DataOut);
+		$display(cpu.registerfile.ReadData1);
+
 	// End execution after some time delay - adjust to match your program
-	// or use a smarter approach like looking for an exit syscall or the
+	// or use a smarter approach like looking sfor an exit syscall or the
 	// PC to be the value of the last instruction in your program.
-	#2000 $finish();
+	$display("%4t | %b | %b", $time, cpu.MemoryDb, cpu.mux3sel, "jee");
+	$finish();
     end
 
 endmodule
