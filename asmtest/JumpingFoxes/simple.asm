@@ -14,7 +14,7 @@ next:
 	j last
 
 last:
-	addi $a4, $zero, 220
+	addi $a4, $zero, 120
 	add $v0, $a0, $a1
 	xori $v3, $a0, 30
 	xori $v4, $a0, 23

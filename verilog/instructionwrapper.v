@@ -8,11 +8,12 @@ module instructionwrapper
 (
 
     input[31:0] Instructions,
+    input[31:0] Pc,
 
 	output[4:0] Rs, Rd, Rt, shift,
 	output[15:0] imm,
 	output[5:0] Op, funct,
-	output[25:0] addr,
+	output[31:0] addr,
     output[2:0] alu_src,
     output jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg      
 );
@@ -30,6 +31,7 @@ module instructionwrapper
 
 	instructionReadJType instructionReadJType(
 		.Instruction(Instructions),
+		.Pc(Pc + 32'd4),
 		.addr(addr),
 		.Op(Op)
 	);
