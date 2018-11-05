@@ -43,19 +43,6 @@ module cpu_test ();
         end
 
     $display(mem_text_fn);
-    //$dumpvars();
-
-        // Load CPU memory from (assembly) dump files
-        // Assumes compact memory map, _word_ addressed memory implementation
-        //   -> .text segment starts at word address 0 
-          //-> .data segment starts at word address 2048 (byte address 0x2000)
-		// $readmemh("InstructionExample.dat", cpu.Dmem.memory, 0);
-  //       if (init_data) begin
-	 //    	$readmemh("InstructionExample.dat", cpu.Dmem.memory, 2048);
-  //       end
-
-	// Dump waveforms to file
-	// Note: arrays (e.g. memory) are not dumped by default
 	$dumpfile("CPUtestN.vcd");
 
 
@@ -73,11 +60,12 @@ module cpu_test ();
 
 	$display("PC | IMM  | ALUOutput | MemoryOutput | MEMORY input | Da  | Db  | reg input | branch ");
 	repeat(10) begin
-        $display("%4t | %b | %b | %b | %d | %d | %d | %d | %d | %d", $time, cpu.PCaddr, cpu.MemoryDb, cpu.addr, cpu.DataOutMem, cpu.Db, cpu.Da, cpu.extendedaddr, cpu.jumpaddrPC, cpu.imm); #20 ;
+        $display("%4t | %b | %b | %b | %d | %d | %d | %d | %d | %d", $time, cpu.PCaddr, cpu.MemoryDb, cpu.addr, cpu.DataOutMem, cpu.Db, cpu.Da, cpu.jump, cpu.jumpaddrPC, cpu.imm); #20 ;
         end
 	$display("... more execution (see waveform)");
 
 	#2000;
+
 	if (cpu.registerfile.ReadData2 === 32'd48)
 		$display("Fibonnaci test passed!");
 	else

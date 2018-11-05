@@ -7,10 +7,5 @@ module signextendjump
 
 
 	assign extended = {{6{unextended[25]}}, {unextended[25:0]}};
-	// always_comb begin
-	// 	extended = {{6{unextended[25]}}, extended};
-	// end
-  // initial begin 
-  //   extended <= $signed(unextended);
-  // end
+
 endmodule
