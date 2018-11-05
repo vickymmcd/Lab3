@@ -55,7 +55,7 @@ module CPU
   DFF pc(.clk(clk),.reset(reset),.enable(1'b1),.in(PCaddr), .out(PCupdated)); // Incrementing the PC
 
   // Getting control values, addr, etc. Breaking down the instruction
-  instructionwrapper instrwrpr(MemoryDb, PCupdated, Rs, Rd, Rt, shift, imm, Op, funct, addr, alu_src, jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg);
+  instructionwrapper instrwrpr(MemoryDb, PCaddr, Rs, Rd, Rt, shift, imm, Op, funct, addr, alu_src, jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg);
 
   // Adding four to the PC
   ALU alu1(.result(PCplusfour), .carryout(carryoutPC), .zero(zeroPC), .overflow(overflowPC), .operandA(PCupdated), .operandB(32'd4), .command(3'b000));
@@ -100,7 +100,7 @@ module CPU
   mux32bitsel mux5(jumpaddrPC, jumpReg, jumpaddr, Da);
 
   //shifting jump
-  shift signextendedJump(addr, shiftedjumpaddr);
+  //shift signextendedJump(addr, shiftedjumpaddr);
 
   // Checking to jump or not
   mux32bitsel mux6(PCaddr, jump,  jumpaddrPC, addr); // when 1, take jumpaddPC

@@ -2,7 +2,7 @@ start:
 	addi $a0, $zero, 2
 	addi $a1, $zero, 3737
 	addi $a2, $zero, 4
-	j last
+	j end
 	addi $a2, $zero, 4747
 
 next:
