@@ -29,7 +29,7 @@ module datamemory
     reg [31:0] memory[4095:0];     // 16kb Memory
 
     assign InstrIndex = {instructionAddr[13:2]}; // taking off the last two bits
-    assign DataIndex = {address[11:0]};
+    assign DataIndex = {address[13:2]};
 
 
     always @(posedge clk) begin

@@ -5,6 +5,7 @@
 #    Array size (# of words) stored in register $t1
 la 	$t0, my_array		# Store array base address in register (la pseudoinstruction)
 addi	$t1, $zero, 16		# 16 elements in array
+addi	$v0, $zero, 20
 
 
 # Solution pseudocode:
@@ -17,7 +18,7 @@ addi	$t2, $zero, 0		# i, the current array element being accessed
 addi	$t3, $t0, 0		# address of my_array[i] (starts from base address for i=0)
 
 LOOPSTART:
-beq 	$t2, $t1, LOOPEND	# if i == 16: GOTO DONE
+beq 	$t2, $t1, LOOPPREEND	# if i == 16: GOTO DONE
 
 lw	$t5, 0($t3)		# temp = my_array[i]		{LOAD FROM MEMORY}
 addi	$t5, $t5, 5		# Add 5 to element temp		{MODIFY IN REGISTER}
@@ -25,7 +26,10 @@ sw	$t5, 0($t3)		# my_array[i] = temp		{STORE TO MEMORY}
 
 addi	$t2, $t2, 1		# increment i counter
 addi	$t3, $t3, 4		# increment address by 1 word
+
 j	LOOPSTART		# GOTO start of loop
+LOOPPREEND:
+j	LOOPEND	
 LOOPEND:
 j	LOOPEND			# Jump trap prevents falling off end of program
 

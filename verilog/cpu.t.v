@@ -59,23 +59,69 @@ module cpu_test ();
 
 
 	$display("PC | IMM  | ALUOutput | MemoryOutput | MEMORY input | Da  | Db  | reg input | branch ");
-	repeat(10) begin
-        $display("%4t | %b | %b | %b | %d | %d | %d | %d | %d | %d", $time, cpu.PCaddr, cpu.MemoryDb, cpu.addr, cpu.DataOutMem, cpu.Db, cpu.Da, cpu.jump, cpu.jumpaddrPC, cpu.imm); #20 ;
+	repeat(20) begin
+        $display("%4t | %d | %d | %d|  %b | %d | %d | %d | %d | %d ", $time,  cpu.regDstSel, cpu.PCaddr , cpu.writebackreg, , cpu.DataOut, cpu.imm, cpu.registerfile.register8,cpu.cpu.registerfile.register2 , cpu.jump, cpu.jumpLink); #20 ;
+
         end
-	$display("... more execution (see waveform)");
 
 	#2000;
 
-	if (cpu.registerfile.ReadData2 === 32'd48)
-		$display("Fibonnaci test passed!");
-	else
-		$display("%b",cpu.DataOut);
-		$display(cpu.registerfile.ReadData1);
+	// Test Checks for each test file, only prints if test passed
 
-	// End execution after some time delay - adjust to match your program
-	// or use a smarter approach like looking sfor an exit syscall or the
-	// PC to be the value of the last instruction in your program.
-	$display("%4t | %b | %d", $time, cpu.MemoryDb, cpu.DataOut, "jee");
+	if(cpu.registerfile.register5 === 32'd120)begin
+		$display("Simple Jump Passed");
+	end
+
+	if(cpu.registerfile.register4 === 32'd12)begin
+		$display("Multiply By 3 Passed");
+	end
+
+	if(cpu.registerfile.register9 === 32'd365)begin
+		$display("Simple LW and SW works");
+	end
+
+	if(cpu.registerfile.register10 === 32'd16 )begin
+		$display("array_loop works"); // How to check memory, need to reserach sw and lw more
+	end
+
+	if(cpu.registerfile.register2 === 32'd58 )begin
+		$display("Fibb test works"); // How to check memory, need to reserach sw and lw more
+	end
+
+	$display(cpu.registerfile.register0);
+	$display(cpu.registerfile.register1);
+	$display(cpu.registerfile.register2);
+	$display(cpu.registerfile.register3);
+	$display(cpu.registerfile.register4);
+	$display(cpu.registerfile.register5);
+	$display(cpu.registerfile.register6);
+	$display(cpu.registerfile.register7);
+	$display(cpu.registerfile.register8);
+	$display(cpu.registerfile.register9);
+	$display(cpu.registerfile.register10);
+	$display(cpu.registerfile.register11);
+	$display(cpu.registerfile.register12);
+	$display(cpu.registerfile.register13);
+	$display(cpu.registerfile.register14);
+	$display(cpu.registerfile.register15);
+	$display(cpu.registerfile.register16);
+	$display(cpu.registerfile.register17);
+	$display(cpu.registerfile.register18);
+	$display(cpu.registerfile.register19);
+	$display(cpu.registerfile.register20);
+	$display(cpu.registerfile.register21);
+	$display(cpu.registerfile.register22);
+	$display(cpu.registerfile.register23);
+	$display(cpu.registerfile.register24);
+	$display(cpu.registerfile.register25);
+	$display(cpu.registerfile.register26);
+	$display(cpu.registerfile.register27);
+	$display(cpu.registerfile.register28);
+	$display(cpu.registerfile.register29);
+	$display(cpu.registerfile.register30);
+	$display(cpu.registerfile.register31);
+
+
 	$finish();
     end
 

@@ -10,6 +10,7 @@
 `include "signextendjump16.v"
 `include "shift.v"
 `include "branch.v"
+`include "mux32bit3to1sel.v"
 `timescale 1ns/1ps
 
 module CPU
@@ -41,7 +42,8 @@ module CPU
   wire[5:0] Op, funct;
   wire[31:0] addr;
   wire[2:0] alu_src;
-  wire jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg, reset;  
+  wire[1:0] regDst;
+  wire jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, memToReg, reset;  
 
   // data A and B
   wire[31:0] Da, Db, MemoryDb;
@@ -70,10 +72,13 @@ module CPU
   ALU alu2(PCfourimm, carryoutIm, zeroIm, overflowIm, PCplusfour, shiftedimm, 3'b000);
   // need to figure out how to use a mux to decide between different PC values
 
-  mux32bitsel mux1(writebackreg, jumpLink,  writebackDout, PCplusfour);
+  mux32bitsel mux1(writebackreg, jumpLink,  writebackDout, PCplusfour + 3'b100); // choose between PC+8 and write back from memory/alu
+
+
+  mux32bit3to1sel mux7(regDstSel, regDst, Rt, Rd, 32'd31);
 
   // Slected which destiation we want
-  mux32bitsel mux7(regDstSel, regDst, Rt, Rd); // When 0 use rt, when 1 use rd
+  //mux32bitsel mux7(regDstSel, regDst, Rt, Rd); // When 0 use rt, when 1 use rd
 
   // The reg file for sotring things
   regfile registerfile(Da, Db, writebackreg, Rs, Rt, regDstSel, reg_write, clk);

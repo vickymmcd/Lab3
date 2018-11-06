@@ -36,7 +36,8 @@ module instructiondecode(
     //input[5:0] function, // Not sure if needed
     
     output reg[2:0] alu_src,
-    output reg jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg                      
+    output reg[1:0] regDst,
+    output reg jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, memToReg                      
 );
 
 	//Instructions: LW, SW, J, JR, JAL, BEQ, BNE, XORI, ADDI, ADD, SUB, SLT
@@ -55,7 +56,7 @@ always @(Op) begin
             reg_write = 1; // write to reg
             mem_write = 0;
             memToReg = 1;  // use data output
-            regDst = 0; // put in rt     
+            regDst = 2'b00; // put in rt     
         end
         `SW: begin
             jump = 0;
@@ -65,10 +66,10 @@ always @(Op) begin
             bne = 0;
             alu_src = `alu_add;
             alu_control = 0;
-            reg_write = 0;
+            reg_write =0;
             mem_write = 1;
             memToReg = 0;
-            regDst = 0;  // x,dosent matter
+            regDst = 2'b00;  // x,dosent matter
         end
         `J: begin
             jump = 1;
@@ -81,7 +82,7 @@ always @(Op) begin
             reg_write = 0;
             mem_write = 0;
             memToReg = 0;
-            regDst = 0; // dosent matter 
+            regDst = 2'b00; // dosent matter 
         end
         `JAL: begin
             jump = 1;
@@ -94,7 +95,7 @@ always @(Op) begin
             reg_write = 1;
             mem_write = 0;
             memToReg = 1;
-            regDst = 1;     
+            regDst = 2'b11;     
         end
         `BEQ: begin
             jumpReg = 0;
@@ -107,7 +108,7 @@ always @(Op) begin
             reg_write = 0;
             mem_write = 0;
             memToReg = 0;
-            regDst = 0; // selecting RD instead
+            regDst = 2'b00; // selecting RD instead
         end
         `BNE: begin
             jumpReg = 0;
@@ -120,7 +121,7 @@ always @(Op) begin
             reg_write = 0;
             mem_write = 0;
             memToReg = 0;
-            regDst = 0; 
+            regDst = 2'b00; 
         end
         `XORI: begin
             jump = 0;
@@ -133,7 +134,7 @@ always @(Op) begin
             reg_write = 1;
             mem_write = 0;
             memToReg = 0;
-            regDst = 0; 
+            regDst = 2'b00; 
         end
         `ADDI: begin
             jump = 0;
@@ -146,7 +147,7 @@ always @(Op) begin
             mem_write = 0;
             memToReg = 0;
             regDst = 0; 
-            jumpReg = 0;
+            jumpReg = 2'b00;
         end
         `ADDIU: begin
             jump = 0;
@@ -159,7 +160,7 @@ always @(Op) begin
             mem_write = 0;
             memToReg = 0;
             regDst = 0; 
-            jumpReg = 0;
+            jumpReg = 02'b00;
         end
         `RTypeFlag: begin
             case(funct)
@@ -174,7 +175,7 @@ always @(Op) begin
                     reg_write = 0;
                     mem_write = 0;
                     memToReg = 0;
-                    regDst = 0; 
+                    regDst = 2'b00; 
                 end
                 `ADD_f: begin
                     jump = 0;
@@ -187,7 +188,7 @@ always @(Op) begin
                     reg_write = 1;
                     mem_write = 0;
                     memToReg = 0;
-                    regDst = 1; 
+                    regDst = 2'b01; 
                 end
                 `SLT_f: begin
                     jump = 0;
@@ -200,7 +201,7 @@ always @(Op) begin
                     reg_write = 1;
                     mem_write = 0;
                     memToReg = 0;
-                    regDst = 1;
+                    regDst = 2'b01;
                 end
                 `SUB_f: begin
                     jump = 0;
@@ -213,7 +214,7 @@ always @(Op) begin
                     reg_write = 1;
                     mem_write = 0;
                     memToReg = 0;
-                    regDst = 1;
+                    regDst = 2'b01;
                 end
             endcase
         end

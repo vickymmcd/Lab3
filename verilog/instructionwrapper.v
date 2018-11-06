@@ -15,7 +15,8 @@ module instructionwrapper
 	output[5:0] Op, funct,
 	output[31:0] addr,
     output[2:0] alu_src,
-    output jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg      
+    output[1:0] regDst,
+    output jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, memToReg      
 );
 
 	wire ALU_src;

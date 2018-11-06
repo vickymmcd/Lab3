@@ -3,9 +3,11 @@
 ## Assembly settings
 
 # Assembly program (minus .asm extension)
-PROGRAM := JumpingFoxes/simple
+PROGRAM := $(toRun)
+#NINJA/array_loop/array_loop
 #NINJA/fib_func/fib_func
 #JumpingFoxes/multiplyby3
+#JumpingFoxes/simple
 
 # Memory image(s) to create from the assembly program
 TEXTMEMDUMP := $(PROGRAM).text.hex
