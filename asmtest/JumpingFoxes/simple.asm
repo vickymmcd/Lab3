@@ -1,14 +1,11 @@
 start:
-	addi $a0, $zero, 4
-	beq $a0, 4, second
-	addi $v0, $zero 1
+	addi $t0, $zero, 2
+	addi $t1, $zero, 3
+	j do_something
 
-test:
-	addi $v0, $zero, 876
+finish:
+	add $a0, $t0, $t1
 
-second:
-	addi $v0, $zero, 28238
-	j end
-
-end:
-	j end
+do_something:
+	addi $t0, $t0, 6
+	j finish

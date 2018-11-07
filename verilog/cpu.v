@@ -44,7 +44,7 @@ module CPU
   wire[5:0] Op, funct;
   wire[25:0] addr;
   wire[2:0] alu_src;
-  wire jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg, reset;  
+  wire jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg, reset;
 
   // data A and B
   wire[31:0] Da, Db, MemoryDb;
@@ -64,7 +64,7 @@ module CPU
   shift signextended(extendedimm, shiftedimm);
 
   signextendjump16 signextendjump2(imm,extendedimm);
-  // 
+  //
   ALU alu2(PCfourimm, carryoutIm, zeroIm, overflowIm, PCplusfour, shiftedimm, 3'b000);
   // need to figure out how to use a mux to decide between different PC values
 
