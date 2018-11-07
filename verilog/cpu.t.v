@@ -59,8 +59,9 @@ module cpu_test ();
 
 
 	$display("PC | IMM  | ALUOutput | MemoryOutput | MEMORY input | Da  | Db  | reg input | branch ");
-	repeat(20) begin
-        $display("%4t | %d | %d | %d|  %b | %d | %d | %d | %d | %d ", $time,  cpu.regDstSel, cpu.PCaddr , cpu.writebackreg, , cpu.DataOut, cpu.imm, cpu.registerfile.register8,cpu.cpu.registerfile.register2 , cpu.jump, cpu.jumpLink); #20 ;
+	repeat(25) begin
+
+        $display("%4t | %b | %d | %d|  %d | %d | %d | %d | %d | %d ", $time,  cpu.instrwrpr.alu_control, cpu.Da , cpu.selB, cpu.extendedimm, cpu.Db, cpu.mux2.out,cpu.mux2.input1 , cpu.mux2.input1, cpu.alu_control); #20 ;
 
         end
 
@@ -98,28 +99,28 @@ module cpu_test ();
 	$display(cpu.registerfile.register7);
 	$display(cpu.registerfile.register8);
 	$display(cpu.registerfile.register9);
-	$display(cpu.registerfile.register10);
-	$display(cpu.registerfile.register11);
-	$display(cpu.registerfile.register12);
-	$display(cpu.registerfile.register13);
-	$display(cpu.registerfile.register14);
-	$display(cpu.registerfile.register15);
-	$display(cpu.registerfile.register16);
-	$display(cpu.registerfile.register17);
-	$display(cpu.registerfile.register18);
-	$display(cpu.registerfile.register19);
-	$display(cpu.registerfile.register20);
-	$display(cpu.registerfile.register21);
-	$display(cpu.registerfile.register22);
-	$display(cpu.registerfile.register23);
-	$display(cpu.registerfile.register24);
-	$display(cpu.registerfile.register25);
-	$display(cpu.registerfile.register26);
-	$display(cpu.registerfile.register27);
-	$display(cpu.registerfile.register28);
-	$display(cpu.registerfile.register29);
-	$display(cpu.registerfile.register30);
-	$display(cpu.registerfile.register31);
+	// $display(cpu.registerfile.register10);
+	// $display(cpu.registerfile.register11);
+	// $display(cpu.registerfile.register12);
+	// $display(cpu.registerfile.register13);
+	// $display(cpu.registerfile.register14);
+	// $display(cpu.registerfile.register15);
+	// $display(cpu.registerfile.register16);
+	// $display(cpu.registerfile.register17);
+	// $display(cpu.registerfile.register18);
+	// $display(cpu.registerfile.register19);
+	// $display(cpu.registerfile.register20);
+	// $display(cpu.registerfile.register21);
+	// $display(cpu.registerfile.register22);
+	// $display(cpu.registerfile.register23);
+	// $display(cpu.registerfile.register24);
+	// $display(cpu.registerfile.register25);
+	// $display(cpu.registerfile.register26);
+	// $display(cpu.registerfile.register27);
+	// $display(cpu.registerfile.register28);
+	// $display(cpu.registerfile.register29);
+	// $display(cpu.registerfile.register30);
+	// $display(cpu.registerfile.register31);
 
 
 	$finish();
