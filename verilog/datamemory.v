@@ -3,6 +3,8 @@
 //   Positive edge triggered
 //   dataOut always has the value mem[address]
 //   If writeEnable is true, writes dataIn to mem[address]
+
+// Adapted from module provided by Ben
 //------------------------------------------------------------------------
 
 module datamemory
@@ -26,11 +28,12 @@ module datamemory
     wire [11:0] InstrIndex;     // Instruction memory index
     reg [31:0] memory[4095:0];     // 16kb Memory
 
-    assign InstrIndex = {instructionAddr[13:2]};
+    assign InstrIndex = {instructionAddr[13:2]}; // taking off the last two bits
     assign DataIndex = {address[13:2]};
 
 
     always @(posedge clk) begin
+
         if(writeEnable)
             memory[DataIndex] <= dataIn;
     end

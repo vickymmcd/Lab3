@@ -1,11 +1,16 @@
 start:
-	addi $t0, $zero, 2
-	addi $t1, $zero, 3
-	j do_something
+	addi $at, $zero, 2
+	addi $v0, $zero, 3737
+	j last
+	addi $v1, $zero, 4747
 
-finish:
-	add $a0, $t0, $t1
+next:
+	add $a0, $at, 34
+	j last
 
-do_something:
-	addi $t0, $t0, 6
-	j finish
+last:
+	addi $a1, $zero, 120
+	j end
+
+end:
+	j end

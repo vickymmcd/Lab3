@@ -1,8 +1,6 @@
-start:
-	addi $a0, $zero, 4
-	addi $a1, $zero, 123
-	slt $v0, $a0, $a1
-	j end
+# compute 3*n by doing n+n+n
 
-end:
-	j end
+addi $t1, $zero, 4
+
+add $t2,$t1,$t1 # add 4+4
+add $a0,$t2,$t1 # add the third 4
