@@ -58,9 +58,10 @@ module cpu_test ();
 	reset = 0; #10;
 
 
-	$display("PC | IMM  | ALUOutput | MemoryOutput | MEMORY input | Da  | Db  | reg input | branch ");
-	repeat(20) begin
-        $display("%4t | %d | %d | %d|  %b | %d | %d | %d | %d | %d ", $time,  cpu.regDstSel, cpu.PCaddr , cpu.writebackreg, , cpu.DataOut, cpu.imm, cpu.registerfile.register8,cpu.cpu.registerfile.register2 , cpu.jump, cpu.jumpLink); #20 ;
+	$display("PC         |     A      |    B       | ALUOutput  ");
+	repeat(40) begin
+
+        $display("%d | %d | %d | %d ", cpu.PCaddr, cpu.Da, cpu.selB, cpu.DataOut); #20 ;
 
         end
 
@@ -88,38 +89,38 @@ module cpu_test ();
 		$display("Fibb test works"); // How to check memory, need to reserach sw and lw more
 	end
 
-	$display(cpu.registerfile.register0);
-	$display(cpu.registerfile.register1);
-	$display(cpu.registerfile.register2);
-	$display(cpu.registerfile.register3);
-	$display(cpu.registerfile.register4);
-	$display(cpu.registerfile.register5);
-	$display(cpu.registerfile.register6);
-	$display(cpu.registerfile.register7);
-	$display(cpu.registerfile.register8);
-	$display(cpu.registerfile.register9);
-	$display(cpu.registerfile.register10);
-	$display(cpu.registerfile.register11);
-	$display(cpu.registerfile.register12);
-	$display(cpu.registerfile.register13);
-	$display(cpu.registerfile.register14);
-	$display(cpu.registerfile.register15);
-	$display(cpu.registerfile.register16);
-	$display(cpu.registerfile.register17);
-	$display(cpu.registerfile.register18);
-	$display(cpu.registerfile.register19);
-	$display(cpu.registerfile.register20);
-	$display(cpu.registerfile.register21);
-	$display(cpu.registerfile.register22);
-	$display(cpu.registerfile.register23);
-	$display(cpu.registerfile.register24);
-	$display(cpu.registerfile.register25);
-	$display(cpu.registerfile.register26);
-	$display(cpu.registerfile.register27);
-	$display(cpu.registerfile.register28);
-	$display(cpu.registerfile.register29);
-	$display(cpu.registerfile.register30);
-	$display(cpu.registerfile.register31);
+	// $display(cpu.registerfile.register0);
+	// $display(cpu.registerfile.register1);
+	// $display(cpu.registerfile.register2);
+	// $display(cpu.registerfile.register3);
+	// $display(cpu.registerfile.register4);
+	// $display(cpu.registerfile.register5);
+	// $display(cpu.registerfile.register6);
+	// $display(cpu.registerfile.register7);
+	// $display(cpu.registerfile.register8);
+	// $display(cpu.registerfile.register9);
+	// $display(cpu.registerfile.register10);
+	// $display(cpu.registerfile.register11);
+	// $display(cpu.registerfile.register12);
+	// $display(cpu.registerfile.register13);
+	// $display(cpu.registerfile.register14);
+	// $display(cpu.registerfile.register15);
+	// $display(cpu.registerfile.register16);
+	// $display(cpu.registerfile.register17);
+	// $display(cpu.registerfile.register18);
+	// $display(cpu.registerfile.register19);
+	// $display(cpu.registerfile.register20);
+	// $display(cpu.registerfile.register21);
+	// $display(cpu.registerfile.register22);
+	// $display(cpu.registerfile.register23);
+	// $display(cpu.registerfile.register24);
+	// $display(cpu.registerfile.register25);
+	// $display(cpu.registerfile.register26);
+	// $display(cpu.registerfile.register27);
+	// $display(cpu.registerfile.register28);
+	// $display(cpu.registerfile.register29);
+	// $display(cpu.registerfile.register30);
+	// $display(cpu.registerfile.register31);
 
 
 	$finish();

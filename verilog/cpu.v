@@ -57,7 +57,7 @@ module CPU
   DFF pc(.clk(clk),.reset(reset),.enable(1'b1),.in(PCaddr), .out(PCupdated)); // Incrementing the PC
 
   // Getting control values, addr, etc. Breaking down the instruction
-  instructionwrapper instrwrpr(MemoryDb, PCaddr, Rs, Rd, Rt, shift, imm, Op, funct, addr, alu_src, jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, regDst, memToReg);
+  instructionwrapper instrwrpr(.Instructions(MemoryDb), .Pc(PCaddr), .Rs(Rs), .Rd(Rd), .Rt(Rt), .shift(shift), .imm(imm), .Op(Op), .funct(funct), .addr(addr), .alu_src(alu_src), .jump(jump),.jumpLink(jumpLink), .jumpReg(jumpReg), .branchatall(branchatall), .bne(bne), .mem_write(mem_write),.alu_control(alu_control),.reg_write(reg_write), .regDst(regDst), .memToReg(memToReg));
 
   // Adding four to the PC
   ALU alu1(.result(PCplusfour), .carryout(carryoutPC), .zero(zeroPC), .overflow(overflowPC), .operandA(PCupdated), .operandB(32'd4), .command(3'b000));
