@@ -81,7 +81,6 @@ endmodule
 
 
 
-
 module OpTest
 #(parameter width = 8, frameSize = 4)
 (
@@ -99,29 +98,13 @@ module OpTest
 
     //jkff1 src_sel(.trigger(clk), .j(btn[1]), .k(btn[0]), .q(res_sel));
 
-    // Setting the
-    assign Op[0] = OpOut[0];
-    assign Op[1] = OpOut[1];
-    assign Op[2] = OpOut[2];
-    assign Op[3] = OpOut[3];
-
-    //Setting the led's
-    assign Op[0] = OpOut[0];
-    assign Op[1] = OpOut[1];
-    assign Op[2] = OpOut[2];
-    assign Op[3] = OpOut[3];
-
-
-    wire peripheralClkEdge, parallelLoad, serialDataIn;
-    wire[width-1:0] parallelDataIn;
-    wire[frameSize-1:0] valsToShow;
-    wire[3:0] res0, res1;     // Output display options
-
     wire conditionedS0, positiveedge0, negativeedge0, conditionedS1, positiveedge1, negativeedge1, conditionedB0, positiveedge2, negativeedge2, conditionedB1, positiveedge3, negativeedge3;
 
 
     wire[width-1:0] parallelDataOut;
     wire serialDataOut;
+
+
 
 
 
@@ -135,13 +118,7 @@ module OpTest
 
 
 
-
     // inputconditioner button1(.conditioned(conditionedB1), .positiveedge(positiveedge3), .negativeedge(negativeedge3), .clk(clk), .noisysignal(btn[1]));
-
-
-//    // Memory for stored inputs (parametric width set to 4 bits)
-//    dff #(4) sRes_mem1(.trigger(clk), .enable(btn[0]), .d(conditionedS0), .q(serialDataIn));
-//    dff #(4) sRes_mem2(.trigger(clk), .enable(btn[1]), .d(conditionedS1), .q(serialDataIn));
 
     parameter parallelIn = 8'hA5;
     shiftregister #(8) shiftregister(.parallelDataOut(parallelDataOut), .serialDataOut(serialDataOut), .clk(clk), .peripheralClkEdge(positiveedge1), .serialDataIn(conditionedS0), .parallelDataIn(parallelIn), .parallelLoad(negativeedge2) );
