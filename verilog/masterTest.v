@@ -96,6 +96,9 @@ module OpTest
 
 
 
+
+
+
     //jkff1 src_sel(.trigger(clk), .j(btn[1]), .k(btn[0]), .q(res_sel));
 
     wire conditionedS0, positiveedge0, negativeedge0, conditionedS1, positiveedge1, negativeedge1, conditionedB0, positiveedge2, negativeedge2, conditionedB1, positiveedge3, negativeedge3;
