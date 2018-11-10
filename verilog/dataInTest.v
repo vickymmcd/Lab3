@@ -21,32 +21,62 @@ module jkff1
     end
 endmodule
 
-// Four-input MUX with parameterized 4 bit width
-module mux4
-(
-    input[3:0]    in0,
-    input[3:0]    in1,
-    input[3:0]    in2,
-    input[3:0]    in3,
-    input[3:0]    sel,
-    output[3:0]   out
+
+
+
+module mux4to1(
+    output[3:0] reg     out,
+    input[2:0]       address,
+    input[3:0]  input0,
+    input[3:0] input1,
+    input[3:0] input2,
+    input[3:0] input3
 );
+
+    always @* begin
+         // Join single-bit inputs into a bus, use address as index
+             if (address[0] == 1 && address[1]==0 && address[2] ==0 && address[3] = 0)
+                assign out = input0;
+            else if(address[0] == 0 && address[1]==1 && address[2] ==0 && address[3] = 0)
+                assign out = input1;
+            else if(address[0] == 0 && address[1]==0 && address[2] ==1 && address[3] = 0)
+                assign out = input2;
+            else
+                assign out = input3;
+
+    end
+
+endmodule
+
+
+
+
+// // Four-input MUX with parameterized 4 bit width
+// module mux4
+// (
+//     input[3:0]    in0,
+//     input[3:0]    in1,
+//     input[3:0]    in2,
+//     input[3:0]    in3,
+//     input[3:0]    sel,
+//     output[3:0]   out
+// );
     
 
 
-    if(sel[0] == 1 && sel[1] == 0 && sel[2] == 0 && sel[3] == 0) begin
-        out <= in0;
-    end
-    else if(sel[0] == 0 && sel[1] == 1 && sel[2] == 0 && sel[3] == 0) begin
-         out <= in1;
-    end
-    else if(sel[0] == 0 && sel[1] == 0 && sel[2] == 1 && sel[3] == 0) begin
-         out <= in2;
-    end
-    else begin
-         out <= in3;
-    end
-endmodule
+//     if(sel[0] == 1 && sel[1] == 0 && sel[2] == 0 && sel[3] == 0) begin
+//         out <= in0;
+//     end
+//     else if(sel[0] == 0 && sel[1] == 1 && sel[2] == 0 && sel[3] == 0) begin
+//          out <= in1;
+//     end
+//     else if(sel[0] == 0 && sel[1] == 0 && sel[2] == 1 && sel[3] == 0) begin
+//          out <= in2;
+//     end
+//     else begin
+//          out <= in3;
+//     end
+// endmodule
 
 
 
@@ -82,7 +112,7 @@ module DataInTest
     assign Data2Input[3] = sw[3];
 
 
-    mux4 output_select(.in0(OpInput), .in1(Data1Input), .in2(Data2Input), .in3(DataDisplay), .sel(btn),.out(led));
+    mux4to1 output_select(.input0(OpInput), .input1(Data1Input), .input2(Data2Input), .input3(DataDisplay), .address(btn),.out(led));
 
 
 endmodule
