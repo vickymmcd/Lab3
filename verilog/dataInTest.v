@@ -25,21 +25,21 @@ endmodule
 
 
 module mux4to1(
-    output[3:0] reg     out,
-    input[2:0]       address,
+    input[3:0]  address,
     input[3:0]  input0,
     input[3:0] input1,
     input[3:0] input2,
-    input[3:0] input3
+    input[3:0] input3,
+    output reg[3:0] out
 );
 
     always @* begin
          // Join single-bit inputs into a bus, use address as index
-             if (address[0] == 1 && address[1]==0 && address[2] ==0 && address[3] = 0)
+             if (address[0] == 1 && address[1]==0 && address[2] ==0 && address[3] === 0)
                 assign out = input0;
-            else if(address[0] == 0 && address[1]==1 && address[2] ==0 && address[3] = 0)
+            else if(address[0] == 0 && address[1]==1 && address[2] ==0 && address[3] === 0)
                 assign out = input1;
-            else if(address[0] == 0 && address[1]==0 && address[2] ==1 && address[3] = 0)
+            else if(address[0] === 0 && address[1]===0 && address[2] ===1 && address[3] === 0)
                 assign out = input2;
             else
                 assign out = input3;
@@ -48,6 +48,19 @@ module mux4to1(
 
 endmodule
 
+
+// deliverable 5
+module mux4to1by4(
+
+  input [3:0] input0, input1, input2, input3,  // inputs
+  input [3:0]   addr,
+  output[3:0] out
+
+  );
+  wire [3:0] out;
+
+  assign out = ({4{addr[0]}} & input0) | ({4{addr[1]}} & input1) | ({4{addr[2]}} & input2) | ({4{addr[3]}} & input3) ;
+endmodule
 
 
 
@@ -112,7 +125,7 @@ module DataInTest
     assign Data2Input[3] = sw[3];
 
 
-    mux4to1 output_select(.input0(OpInput), .input1(Data1Input), .input2(Data2Input), .input3(DataDisplay), .address(btn),.out(led));
+    mux4to1by4 output_select(.input0(OpInput), .input1(Data1Input), .input2(Data2Input), .input3(DataDisplay), .addr(btn),.out(led));
 
 
 endmodule

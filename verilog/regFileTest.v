@@ -92,32 +92,24 @@ module OpTest
 
     wire res_sel;             // 0 = setting operation , 1 = setting data
     wire clk;
-    wire[3:0] Op, OpOut;
+    wire[31:0] DataIn0, DataIn1, DataOut0, DataOut1;
+
+  regfile registerFile
+  (
+    .ReadData1(ReadData1),
+    .ReadData2(ReadData2),
+    .WriteData(WriteData),
+    .ReadRegister1(ReadRegister1),
+    .ReadRegister2(ReadRegister2),
+    .WriteRegister(WriteRegister),
+    .RegWrite(RegWrite),
+    .Clk(Clk)
+  );
 
 
 
+    jkff1 src_sel(.trigger(clk), .j(btn[2]), .k(btn[1]), .q(res_sel));
 
-
-
-    //jkff1 src_sel(.trigger(clk), .j(btn[1]), .k(btn[0]), .q(res_sel));
-
-    wire conditionedS0, positiveedge0, negativeedge0, conditionedS1, positiveedge1, negativeedge1, conditionedB0, positiveedge2, negativeedge2, conditionedB1, positiveedge3, negativeedge3;
-
-
-    wire[width-1:0] parallelDataOut;
-    wire serialDataOut;
-
-
-
-
-
-    inputconditioner switch0(.conditioned(conditionedS0), .positiveedge(positiveedge0), .negativeedge(negativeedge0), .clk(clk), .noisysignal(sw[0]));
-    inputconditioner switch1(.conditioned(conditionedS1), .positiveedge(positiveedge1), .negativeedge(negativeedge1), .clk(clk), .noisysignal(sw[1]));
-    inputconditioner button0(.conditioned(conditionedB0), .positiveedge(positiveedge2), .negativeedge(negativeedge2), .clk(clk), .noisysignal(btn[0]));
-
-
-    // Get Operation Code
-    // Set the switches to capture the correct code, press button 0 to save
 
 
 
@@ -126,7 +118,7 @@ module OpTest
     parameter parallelIn = 8'hA5;
     shiftregister #(8) shiftregister(.parallelDataOut(parallelDataOut), .serialDataOut(serialDataOut), .clk(clk), .peripheralClkEdge(positiveedge1), .serialDataIn(conditionedS0), .parallelDataIn(parallelIn), .parallelLoad(negativeedge2) );
     // Capture button input to switch which MUX input to LEDs
-    jkff1 src_sel(.trigger(clk), .j(btn[2]), .k(btn[1]), .q(res_sel));
+    
     mux2 #(4) output_select(.in0(res0), .in1(res1), .sel(res_sel), .out(led));
 
 
