@@ -15,8 +15,6 @@
 `define NOR_ALU  3'd6
 `define OR_ALU   3'd7
 
-`timescale 1ns/1ps
-
 
 module ALUcontrolLUT
 (
@@ -93,7 +91,7 @@ module structuralBitSlice
  `AND andGate1(AB, a, b);
  `AND andGateb(AnewB, a, newB);
  `AND andGate2(AxorBC, carryin, AxorB2);
- `OR orGate( carryout, AnewB, AxorBC);
+ `OR orGate1( carryout, AnewB, AxorBC);
 
  // values for or and nor
  `OR orGate(AorB, a, b);
