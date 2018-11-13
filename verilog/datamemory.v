@@ -39,6 +39,13 @@ module datamemory
     end
     // assign dataOut = memory[address]; OLD
 
+
+
+    // UNCOMMENT THIS LINE IN VIVADO
+    //inital  $readmemh("test.mem", dut.memory);
+
+
+
     //initial $readmemh("InstructionExample.dat", memory);
     assign dataOut = memory[DataIndex];
     assign instructionOut = memory[InstrIndex];
