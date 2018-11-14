@@ -10,11 +10,12 @@ module alltest
     output reg [3:0] led
 );
 
-reg[31:0] address, dataIn, OpMod, dataOut;
-wire[31:0] instructionOut;
-reg writeEnable;
+reg[31:0] OpMod;
+reg[15:0] immediate;
+reg[5:0] opmode, functval;
+wire[31:0] leddisplay;
 
-CPU cpu(.clk(clk), .reset(reset));
+CPU cpu(.clk(clk), .reset(reset), .opmode(opmode), .functval(functval), .immediate(immediate), .leddisplay(leddisplay));
 
 always @(posedge clk) begin
 // Cases:
@@ -41,354 +42,84 @@ if (btn[0] == 1) begin
   OpMod[3] <= sw[3];
 end
 
+// Select immediate value
+if (btn[1] == 1) begin
+
+  immediate[0] <= sw[0];
+  immediate[1] <= sw[1];
+  immediate[2] <= sw[2];
+  immediate[3] <= sw[3];
+end
+
+// Setting the led's
+if (btn[3] == 1) begin
+  led[0] <= leddisplay[0];
+  led[1] <= leddisplay[1];
+  led[2] <= leddisplay[2];
+  led[3] <= leddisplay[3];
+end
+
 // case ADD 0000
 if ((OpMod[0] == 0) && (OpMod[1] == 0) && (OpMod[2] == 0) && (OpMod[3] == 0)) begin
-
-// Instantiate ADD
-//button 2 specifies which register A is in using the values of the switches when the button is pressed and the same works for B when button 3 is pressed
-
-  dataOut <= cpu.DataOut;
-
-  if (btn[1] == 1) begin
-    address[0] <= sw[0];
-    address[1] <= sw[1];
-    address[2] <= sw[2];
-    address[3] <= sw[3];
-  end
-
-  if (btn[2] == 1) begin
-    dataIn[0] <= sw[0];
-    dataIn[1] <= sw[1];
-    dataIn[2] <= sw[2];
-    dataIn[3] <= sw[3];
-  end
-
-  if (btn[3] == 1) begin
-    led[0] <= dataOut[0];
-    led[1] <= dataOut[1];
-    led[2] <= dataOut[2];
-    led[3] <= dataOut[3];
-  end
-
-
+  assign opmode = 6'b000000;
+  assign functval = 6'h20;
 end
 
 // case ADDI 0001
 if ((OpMod[0] == 0) && (OpMod[1] == 0) && (OpMod[2] == 0) && (OpMod[3] == 1)) begin
-
-// Instantiate ADDI
-// same as ADD except this time instead of using B to specify which register B is in, it simply specifies a numeric value between 0 and 32
-
-
-  if (btn[1] == 1) begin
-    address[0] <= sw[0];
-    address[1] <= sw[1];
-    address[2] <= sw[2];
-    address[3] <= sw[3];
-  end
-
-  if (btn[2] == 1) begin
-    dataIn[0] <= sw[0];
-    dataIn[1] <= sw[1];
-    dataIn[2] <= sw[2];
-    dataIn[3] <= sw[3];
-  end
-
-  if (btn[3] == 1) begin
-    led[0] <= dataOut[0];
-    led[1] <= dataOut[1];
-    led[2] <= dataOut[2];
-    led[3] <= dataOut[3];
-  end
+  assign opmode = 6'b001000;
 end
 
   // case SUB 0010
 if ((OpMod[0] == 0) && (OpMod[1] == 0) && (OpMod[2] == 1) && (OpMod[3] == 0)) begin
-
-// Instantiate SUB
-//
-
-  if (btn[1] == 1) begin
-    address[0] <= sw[0];
-    address[1] <= sw[1];
-    address[2] <= sw[2];
-    address[3] <= sw[3];
-  end
-
-  if (btn[2] == 1) begin
-    dataIn[0] <= sw[0];
-    dataIn[1] <= sw[1];
-    dataIn[2] <= sw[2];
-    dataIn[3] <= sw[3];
-  end
-
-  if (btn[3] == 1) begin
-    led[0] <= dataOut[0];
-    led[1] <= dataOut[1];
-    led[2] <= dataOut[2];
-    led[3] <= dataOut[3];
-  end
+  assign opmode = 6'b000000;
+  assign functval = 6'h22;
 end
 
   // case SLT 0100
 if ((OpMod[0] == 0) && (OpMod[1] == 1) && (OpMod[2] == 0) && (OpMod[3] == 0)) begin
-
-// Instantiate SLT
-//button 2 specifies which register A is in using the values of the switches when the button is pressed and the same works for B when button 3 is pressed
-
-
-  if (btn[1] == 1) begin
-    address[0] <= sw[0];
-    address[1] <= sw[1];
-    address[2] <= sw[2];
-    address[3] <= sw[3];
-  end
-
-  if (btn[2] == 1) begin
-    dataIn[0] <= sw[0];
-    dataIn[1] <= sw[1];
-    dataIn[2] <= sw[2];
-    dataIn[3] <= sw[3];
-  end
-
-  if (btn[3] == 1) begin
-    led[0] <= dataOut[0];
-    led[1] <= dataOut[1];
-    led[2] <= dataOut[2];
-    led[3] <= dataOut[3];
-  end
+  assign opmode = 6'b000000;
+  assign functval = 6'h2a;
 end
 
 // case XORI 1000
 if ((OpMod[0] == 0) && (OpMod[1] == 0) && (OpMod[2] == 0) && (OpMod[3] == 0)) begin
-
-// Instantiate XORI
-//button 2 specifies which register A is in using the values of the switches when the button is pressed and the same works for B when button 3 is pressed
-
-
-  if (btn[1] == 1) begin
-    address[0] <= sw[0];
-    address[1] <= sw[1];
-    address[2] <= sw[2];
-    address[3] <= sw[3];
-  end
-
-  if (btn[2] == 1) begin
-    dataIn[0] <= sw[0];
-    dataIn[1] <= sw[1];
-    dataIn[2] <= sw[2];
-    dataIn[3] <= sw[3];
-  end
-
-  if (btn[3] == 1) begin
-    led[0] <= dataOut[0];
-    led[1] <= dataOut[1];
-    led[2] <= dataOut[2];
-    led[3] <= dataOut[3];
-  end
-
+  assign opmode = 6'b001110;
 end
   // case BNE 0011
 if ((OpMod[0] == 0) && (OpMod[1] == 0) && (OpMod[2] == 1) && (OpMod[3] == 1)) begin
-
-// Instantiate BNE
-//button 2 specifies which register A is in using the values of the switches when the button is pressed and the same works for B when button 3 is pressed
-
-
-  if (btn[1] == 1) begin
-    address[0] <= sw[0];
-    address[1] <= sw[1];
-    address[2] <= sw[2];
-    address[3] <= sw[3];
-  end
-
-  if (btn[2] == 1) begin
-    dataIn[0] <= sw[0];
-    dataIn[1] <= sw[1];
-    dataIn[2] <= sw[2];
-    dataIn[3] <= sw[3];
-  end
-
-  if (btn[3] == 1) begin
-    led[0] <= dataOut[0];
-    led[1] <= dataOut[1];
-    led[2] <= dataOut[2];
-    led[3] <= dataOut[3];
-  end
+  assign opmode = 6'b000101;
 end
 
-  // case ADD
-if ((OpMod[0] == 0) && (OpMod[1] == 0) && (OpMod[2] == 0) && (OpMod[3] == 0)) begin
-
-// Instantiate ADD
-//button 2 specifies which register A is in using the values of the switches when the button is pressed and the same works for B when button 3 is pressed
-
-
-  if (btn[1] == 1) begin
-    address[0] <= sw[0];
-    address[1] <= sw[1];
-    address[2] <= sw[2];
-    address[3] <= sw[3];
-  end
-
-  if (btn[2] == 1) begin
-    dataIn[0] <= sw[0];
-    dataIn[1] <= sw[1];
-    dataIn[2] <= sw[2];
-    dataIn[3] <= sw[3];
-  end
-
-  if (btn[3] == 1) begin
-    led[0] <= dataOut[0];
-    led[1] <= dataOut[1];
-    led[2] <= dataOut[2];
-    led[3] <= dataOut[3];
-  end
+// BEQ = 0111
+if ((OpMod[0] == 0) && (OpMod[1] == 1) && (OpMod[2] == 1) && (OpMod[3] == 1)) begin
+  assign opmode = 6'b000100;
 end
 
-  // case ADD
-if ((OpMod[0] == 0) && (OpMod[1] == 0) && (OpMod[2] == 0) && (OpMod[3] == 0)) begin
-
-// Instantiate ADD
-//button 2 specifies which register A is in using the values of the switches when the button is pressed and the same works for B when button 3 is pressed
-
-
-  if (btn[1] == 1) begin
-    address[0] <= sw[0];
-    address[1] <= sw[1];
-    address[2] <= sw[2];
-    address[3] <= sw[3];
-  end
-
-  if (btn[2] == 1) begin
-    dataIn[0] <= sw[0];
-    dataIn[1] <= sw[1];
-    dataIn[2] <= sw[2];
-    dataIn[3] <= sw[3];
-  end
-
-  if (btn[3] == 1) begin
-    led[0] <= dataOut[0];
-    led[1] <= dataOut[1];
-    led[2] <= dataOut[2];
-    led[3] <= dataOut[3];
-  end
+// JAL = 1111
+if ((OpMod[0] == 1) && (OpMod[1] == 1) && (OpMod[2] == 1) && (OpMod[3] == 1)) begin
+  assign opmode = 6'b000011;
 end
 
-  // case ADD
-if ((OpMod[0] == 0) && (OpMod[1] == 0) && (OpMod[2] == 0) && (OpMod[3] == 0)) begin
-
-// Instantiate ADD
-//button 2 specifies which register A is in using the values of the switches when the button is pressed and the same works for B when button 3 is pressed
-
-
-  if (btn[1] == 1) begin
-    address[0] <= sw[0];
-    address[1] <= sw[1];
-    address[2] <= sw[2];
-    address[3] <= sw[3];
-  end
-
-  if (btn[2] == 1) begin
-    dataIn[0] <= sw[0];
-    dataIn[1] <= sw[1];
-    dataIn[2] <= sw[2];
-    dataIn[3] <= sw[3];
-  end
-
-  if (btn[3] == 1) begin
-    led[0] <= dataOut[0];
-    led[1] <= dataOut[1];
-    led[2] <= dataOut[2];
-    led[3] <= dataOut[3];
-  end
+// JR = 1000
+if ((OpMod[0] == 1) && (OpMod[1] == 0) && (OpMod[2] == 0) && (OpMod[3] == 0)) begin
+  assign opmode = 6'b000000;
+  assign functval = 6'b001000;
 end
 
-  // case ADD
-if ((OpMod[0] == 0) && (OpMod[1] == 0) && (OpMod[2] == 0) && (OpMod[3] == 0)) begin
-
-// Instantiate ADD
-//button 2 specifies which register A is in using the values of the switches when the button is pressed and the same works for B when button 3 is pressed
-
-
-  if (btn[1] == 1) begin
-    address[0] <= sw[0];
-    address[1] <= sw[1];
-    address[2] <= sw[2];
-    address[3] <= sw[3];
-  end
-
-  if (btn[2] == 1) begin
-    dataIn[0] <= sw[0];
-    dataIn[1] <= sw[1];
-    dataIn[2] <= sw[2];
-    dataIn[3] <= sw[3];
-  end
-
-  if (btn[3] == 1) begin
-    led[0] <= dataOut[0];
-    led[1] <= dataOut[1];
-    led[2] <= dataOut[2];
-    led[3] <= dataOut[3];
-  end
+// J = 1100
+if ((OpMod[0] == 1) && (OpMod[1] == 1) && (OpMod[2] == 0) && (OpMod[3] == 0)) begin
+  assign opmode = 6'b000010;
 end
 
-  // case ADD
-if ((OpMod[0] == 0) && (OpMod[1] == 0) && (OpMod[2] == 0) && (OpMod[3] == 0)) begin
-
-// Instantiate ADD
-//button 2 specifies which register A is in using the values of the switches when the button is pressed and the same works for B when button 3 is pressed
-
-
-  if (btn[1] == 1) begin
-    address[0] <= sw[0];
-    address[1] <= sw[1];
-    address[2] <= sw[2];
-    address[3] <= sw[3];
-  end
-
-  if (btn[2] == 1) begin
-    dataIn[0] <= sw[0];
-    dataIn[1] <= sw[1];
-    dataIn[2] <= sw[2];
-    dataIn[3] <= sw[3];
-  end
-
-  if (btn[3] == 1) begin
-    led[0] <= dataOut[0];
-    led[1] <= dataOut[1];
-    led[2] <= dataOut[2];
-    led[3] <= dataOut[3];
-  end
+// SW = 1110
+if ((OpMod[0] == 1) && (OpMod[1] == 1) && (OpMod[2] == 1) && (OpMod[3] == 0)) begin
+  assign opmode = 6'b101011;
 end
 
-  // case ADD
-if ((OpMod[0] == 0) && (OpMod[1] == 0) && (OpMod[2] == 0) && (OpMod[3] == 0)) begin
-
-// Instantiate ADD
-//button 2 specifies which register A is in using the values of the switches when the button is pressed and the same works for B when button 3 is pressed
-
-
-  if (btn[1] == 1) begin
-    address[0] <= sw[0];
-    address[1] <= sw[1];
-    address[2] <= sw[2];
-    address[3] <= sw[3];
-  end
-
-  if (btn[2] == 1) begin
-    dataIn[0] <= sw[0];
-    dataIn[1] <= sw[1];
-    dataIn[2] <= sw[2];
-    dataIn[3] <= sw[3];
-  end
-
-  if (btn[3] == 1) begin
-    led[0] <= dataOut[0];
-    led[1] <= dataOut[1];
-    led[2] <= dataOut[2];
-    led[3] <= dataOut[3];
-  end
+// LW = 0101
+if ((OpMod[0] == 0) && (OpMod[1] == 1) && (OpMod[2] == 0) && (OpMod[3] == 1)) begin
+  assign opmode = 6'b100011;
 end
 
 

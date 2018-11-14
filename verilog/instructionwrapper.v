@@ -9,6 +9,7 @@ module instructionwrapper
 
     input[31:0] Instructions,
     input[31:0] Pc,
+    input[5:0] opmode, functval,
 
 	output[4:0] Rs, Rd, Rt, shift,
 	output[15:0] imm,
@@ -16,16 +17,20 @@ module instructionwrapper
 	output[31:0] addr,
     output[2:0] alu_src,
     output[1:0] regDst,
-    output jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, memToReg      
+    output jump,jumpLink, jumpReg, branchatall, bne,mem_write,alu_control,reg_write, memToReg
 );
 
 	wire ALU_src;
+  wire[5:0] Op2, funct2;
+
+  assign Op = opmode;
+  assign funct = functval;
 
 
 	instructionReadIType instructionReadIType(
 		.Instruction(Instructions),
 		.imm(imm),
-		.Op(Op),
+		.Op(Op2),
 		.Rs(Rs),
 		.Rt(Rt)
 	);
@@ -34,17 +39,17 @@ module instructionwrapper
 		.Instruction(Instructions),
 		.Pc(Pc + 32'd4),
 		.addr(addr),
-		.Op(Op)
+		.Op(Op2)
 	);
 
 	instructionReadRType instructionReadRType(
 		.Instruction(Instructions),
-		.Op(Op),
+		.Op(Op2),
 		.Rs(Rs),
 		.Rt(Rt),
 		.Rd(Rd),
 		.shift(shift),
-		.funct(funct)
+		.funct(funct2)
 	);
 
     instructiondecode instructiondecode(

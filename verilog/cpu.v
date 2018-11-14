@@ -16,7 +16,11 @@
 module CPU
 (
   input clk, // Since the instructions are storded in data memeroy, we only need the clock
-  input reset
+  input reset,
+  input [5:0] opmode,
+  input [5:0] functval,
+  input [15:0] immediate,
+  output [31:0] leddisplay
 );
 
   // wires for PC
@@ -57,7 +61,7 @@ module CPU
   DFF pc(.clk(clk),.reset(reset),.enable(1'b1),.in(PCaddr), .out(PCupdated)); // Incrementing the PC
 
   // Getting control values, addr, etc. Breaking down the instruction
-  instructionwrapper instrwrpr(.Instructions(MemoryDb), .Pc(PCaddr), .Rs(Rs), .Rd(Rd), .Rt(Rt), .shift(shift), .imm(imm), .Op(Op), .funct(funct), .addr(addr), .alu_src(alu_src), .jump(jump),.jumpLink(jumpLink), .jumpReg(jumpReg), .branchatall(branchatall), .bne(bne), .mem_write(mem_write),.alu_control(alu_control),.reg_write(reg_write), .regDst(regDst), .memToReg(memToReg));
+  instructionwrapper instrwrpr(.Instructions(MemoryDb), .Pc(PCaddr), .opmode(opmode), .functval(functval), .Rs(Rs), .Rd(Rd), .Rt(Rt), .shift(shift), .imm(imm), .Op(Op), .funct(funct), .addr(addr), .alu_src(alu_src), .jump(jump),.jumpLink(jumpLink), .jumpReg(jumpReg), .branchatall(branchatall), .bne(bne), .mem_write(mem_write),.alu_control(alu_control),.reg_write(reg_write), .regDst(regDst), .memToReg(memToReg));
 
   // Adding four to the PC
   ALU alu1(.result(PCplusfour), .carryout(carryoutPC), .zero(zeroPC), .overflow(overflowPC), .operandA(PCupdated), .operandB(32'd4), .command(3'b000));
@@ -66,7 +70,7 @@ module CPU
   shift signextended(extendedimm, shiftedimm);
 
   // Extending the immediate
-  signextendjump16 signextendjump2(imm,extendedimm);
+  signextendjump16 signextendjump2(immediate,extendedimm);
 
   // Adding immiate to PC for banch
   ALU alu2(PCfourimm, carryoutIm, zeroIm, overflowIm, PCplusfour, shiftedimm, 3'b000);
