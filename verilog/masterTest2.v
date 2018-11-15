@@ -14,10 +14,10 @@ module alltest
 reg[31:0] OpMod;
 reg[15:0] immediate;
 reg[5:0] opmode, functval;
-wire[31:0] leddisplay, leddisplay2;
+wire[31:0] leddisplay;
 reg buttonClk;
 
-CPU cpu(.clk(clk), .reset(1'b0), .opmode(opmode), .functval(functval), .immediate(immediate), .Rt(leddisplay), .writebackreg(leddisplay2));
+    CPU cpu(.clk(clk), .reset(1'b0), .opmode(opmode), .functval(functval), .immediate(immediate), .DataOut(leddisplay));
 
 always @(posedge clk) begin
 // Cases:
@@ -55,10 +55,10 @@ end
 
 
 if (btn[2] == 1) begin
-    led[0] <=  leddisplay2[0];
-    led[1] <=  leddisplay2[1];
-    led[2] <=  leddisplay2[2];
-    led[3] <= leddisplay2[3];
+    led[0] <=  immediate[0];
+    led[1] <=  immediate[1];
+    led[2] <=  immediate[2];
+    led[3] <= immediate[3];
 
 end
 
