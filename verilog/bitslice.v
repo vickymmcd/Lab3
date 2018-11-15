@@ -95,7 +95,7 @@ module structuralBitSlice
  `OR orGate( carryout, AnewB, AxorBC);
 
  // values for or and nor
- `OR orGate(AorB, a, b);
+ `OR orGate2(AorB, a, b);
  `XOR xorGate4(noror, invert, AorB);
 
  // values for and and nand

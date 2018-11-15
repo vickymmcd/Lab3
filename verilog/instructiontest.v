@@ -54,6 +54,8 @@ always @(posedge clk) begin
       
     end
 
+    
+
 
     if (btn[3] == 1) begin
       //Setting the led's

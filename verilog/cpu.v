@@ -20,7 +20,8 @@ module CPU
   input [5:0] opmode,
   input [5:0] functval,
   input [15:0] immediate,
-  output [31:0] leddisplay
+  output [4:0] Rt,
+  output [31:0] writebackreg
 );
 
   // wires for PC
@@ -52,7 +53,7 @@ module CPU
   // data A and B
   wire[31:0] Da, Db, MemoryDb;
   wire[31:0] selB;
-  wire[31:0] DataOut, DataOutMem;
+  wire[31:0] DataOutMem;
 
   // signextend for jump addr
   wire[31:0] extendedaddr, shiftedaddr;

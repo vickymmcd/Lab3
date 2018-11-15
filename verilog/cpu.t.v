@@ -59,9 +59,9 @@ module cpu_test ();
 
 
 	$display("PC         |     A      |    B       | ALUOutput  ");
-	repeat(40) begin
+	repeat(20) begin
 
-        $display("%d | %d | %d | %d ", cpu.PCaddr, cpu.Da, cpu.selB, cpu.DataOut); #20 ;
+        $display("%d | %d | %d | %d ", cpu.PCaddr, cpu.Da, cpu.selB, cpu.DataOut, cpu.immediate, cpu.PCaddr); #20 ;
 
         end
 
