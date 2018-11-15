@@ -20,8 +20,7 @@ module CPU
   input [5:0] opmode,
   input [5:0] functval,
   input [15:0] immediate,
-  output [4:0] Rt,
-  output [31:0] writebackreg
+  output [4:0] DataOut,
 );
 
   // wires for PC
